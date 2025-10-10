@@ -29,9 +29,11 @@ struct Motorizado{
     union {
         struct Moto{
             char guidom[25]; int offroad;
+            int pressao_ideal[2];
         } moto;
         struct Carro{
             int tracao; int portas; int eletrico;
+            int pressao_ideal[4];
         } carro; //nome do atributo da union
         struct Barco{ //tipo ==2
             int litragem; char tipo_casco[25]; int vel_aq_max;
@@ -50,11 +52,17 @@ void preencheMotorizado(struct Motorizado* ptr,int tipo, int arr[], char nomes[]
         case moto: 
             strncpy(ptr->moto.guidom,nomes[3],25);
             ptr->moto.offroad=arr[1];
+            for (int i=0;i<2;i++){
+                ptr->moto.pressao_ideal[i]=arr[2+i];
+            }
             break;
         case carro:
             ptr->carro.tracao=arr[1]; //arr[0] ja usado para preco de produto, de resto de forma sequencial
             ptr->carro.portas=arr[2];
             ptr->carro.eletrico=arr[3];
+            for (int i=0;i<3;i++){
+                ptr->carro.pressao_ideal[i]=arr[4+i];
+            }
             break;
         case barco:
             ptr->barco.litragem=arr[1];
@@ -128,6 +136,9 @@ void ExibeMotorizado(struct Motorizado coisa){
             else{
                 printf("Essa moto nao eh offroad\n");
             }
+            for (int i=0;i<2;i++){
+                printf("Pressao ideal do pneu %d: %d PSI", i,coisa.pressao_ideal[i]);
+            }
             break;
         case carro: //exibir carro
             printf("A tracao desse carro eh %d x %d \n",coisa.carro.tracao, coisa.carro.tracao);
@@ -137,6 +148,9 @@ void ExibeMotorizado(struct Motorizado coisa){
             }
             else{
                 printf("Essa moto nao eh eletrico\n");
+            }
+            for (int i=0;i<4;i++){
+                printf("Pressao ideal do pneu %d: %d PSI", i,coisa.pressao_ideal[i]);
             }
             break;
         case barco:
@@ -182,3 +196,4 @@ void ExibeEntrada(struct ENTRADA_FINAL coisa){
         ExibeMotorizado(coisa.motorizado);
     }
 }
+
