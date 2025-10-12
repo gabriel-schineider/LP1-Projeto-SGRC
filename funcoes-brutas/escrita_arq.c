@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include "C:\LP1\concessionaria\entrada_struct.h"
+
+void escreveMotorizado(struct Motorizado coisa,FILE* f){ 
+    //escreve um motorizado no arquivo, ja assume offset certo
+    fwrite(&coisa.tipo,sizeof(int),1,f);
+    fwrite(coisa.combustivel,sizeof(char),25,f);//atentar ao '\0' na hr de ler isso p C de volta, isso vai escrever lixo
+    switch (coisa.tipo){
+        case moto: 
+            fwrite(coisa.moto.guidom,sizeof(char),25,f);
+            fwrite(&coisa.moto.offroad,sizeof(int),1,f);
+            fwrite(&coisa.moto.pressao_ideal,sizeof(int),2,f);
+            break;
+        case carro:
+            fwrite(&coisa.carro.tracao,sizeof(int),1,f);
+            fwrite(&coisa.carro.portas,sizeof(int),1,f);
+            fwrite(&coisa.carro.eletrico,sizeof(int),1,f);
+            fwrite(coisa.carro.pressao_ideal,sizeof(int),4,f);
+            break;
+        case barco:
+            fwrite(&coisa.barco.litragem,sizeof(int),1,f); 
+            fwrite(&coisa.barco.vel_aq_max,sizeof(int),1,f);
+            break;
+        case helicoptero:
+            fwrite(&coisa.helicoptero.pas,sizeof(int),1,f);
+            fwrite(&coisa.helicoptero.passageiros,sizeof(int),1,f);
+            fwrite(&coisa.helicoptero.altitude_max,sizeof(int),1,f);
+            break;
+    }
+}
+void escreveManual(struct Manual coisa,FILE* f){
+    //escreve um tipo manual no arquivo, assume que ja esta no offset certo
+    fwrite(&coisa.tipo,sizeof(int),1,f);
+    fwrite(coisa.modelo,sizeof(char),25,f);
+    switch (coisa.tipo){
+        case bike:
+            fwrite(coisa.bike.suspensao,sizeof(char),25,f);
+            fwrite(&coisa.bike.diam_roda,sizeof(int),1,f);
+            fwrite(&coisa.bike.marchas,sizeof(int),1,f);
+            break;
+        case skate:
+            fwrite(&coisa.skate.comprimento,sizeof(int),1,f);
+            fwrite(&coisa.skate.diam_roda,sizeof(int),1,f);
+            fwrite(coisa.skate.tipo_roda,sizeof(char),25,f);
+            break;
+    }
+}
+void EscreverEntrada(ENTRADA_FINAL teste, FILE* f){
+    //Escreve uma entrada na ID informada
+    //Assume todas entradas de tamanho igual(140), FILE* em modo rb+ ou wb+ 
+    //Esse metodo de calculo impede de tentar truncar strings com menos de 25 chars
+    //Em troca, acesso de entradas fica  em O(1) em vez de O(n)
+
+    fseek(f,sizeof(ENTRADA_FINAL)*teste.ID,SEEK_SET); 
+    fwrite(&teste.ID,sizeof(int),1,f);
+    fwrite(&teste.APAGADO,sizeof(int),1,f);
+    fwrite(&teste.classe,sizeof(int),1,f);
+    fwrite(&teste.preco,sizeof(int),1,f);
+    fwrite(teste.nome,sizeof(char),25,f); //se atentar ao '\0' na hora de ler de volta para um programa em C, isso vai escrever lixo
+    fwrite(teste.cor,sizeof(char),25,f);
+    if (teste.classe){
+        escreveManual(teste.manual,f);
+    }
+    else {
+        escreveMotorizado(teste.motorizado,f);
+    }
+
+}
+int main(void){
+    printf("Compilou\n");
+    return 0;
+}
