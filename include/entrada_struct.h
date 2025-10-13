@@ -3,7 +3,7 @@
 #ifndef ENTRADA_STRUCT_H
 #define ENTRADA_STRUCT_H
 
-#define ESPACO 25 // definindo aqui para generalizar e facilitar manutenção (caso precisemos alterar o espaço, mudamos apenas uma vez aqui e não em cada local, o que poderia estar sujeito a falhas)
+#define ESPACO 28 // definindo aqui para generalizar e facilitar manutenção (caso precisemos alterar o espaço, mudamos apenas uma vez aqui e não em cada local, o que poderia estar sujeito a falhas)
 
 enum Entidade{ motorizado, manual }; //0 e 1 respect.
 
@@ -97,7 +97,7 @@ void preencheManual(struct Manual* ptr,int tipo, int arr[],char nomes[][ESPACO])
     }
 }
 
-struct ENTRADA_FINAL{
+typedef struct ENTRADA_FINAL{
     int ID;
     int APAGADO;
     int classe;
@@ -108,9 +108,9 @@ struct ENTRADA_FINAL{
         struct Motorizado motorizado; //classe 0
         struct Manual manual;  //classe 1
     };
-};
+} ENTRADA_FINAL;
 
-void preenche_ENTRADA(struct ENTRADA_FINAL* ptr,int ARR_TIPOS[], int arr[],char nomes[][ESPACO]){
+void preenche_ENTRADA(ENTRADA_FINAL* ptr,int ARR_TIPOS[], int arr[],char nomes[][ESPACO]){
     //arr de inputs numericos, olhar preenche de cada subtipo para olhar ordem certa
     //nomes array 2d com strings usados para preencher campos com string, olhar preencher p ordem
     //tamanho maximo de 24 caracteres para cada string, escolhido arbitrariamente
@@ -118,8 +118,8 @@ void preenche_ENTRADA(struct ENTRADA_FINAL* ptr,int ARR_TIPOS[], int arr[],char 
     ptr->ID=ARR_TIPOS[0];
     ptr->APAGADO=ARR_TIPOS[1];
     ptr->classe=ARR_TIPOS[2]; 
-    strncpy(ptr->nome,nomes[0],25);
-    strncpy(ptr->cor,nomes[1],25);
+    strncpy(ptr->nome,nomes[0],ESPACO);
+    strncpy(ptr->cor,nomes[1],ESPACO);
     ptr->preco=arr[0];
     if(ptr->classe==0){
         preencheMotorizado(&(ptr->motorizado),ARR_TIPOS[2],arr,nomes);
@@ -182,7 +182,7 @@ void ExibeManual(struct Manual coisa){
             break;
     }
 }
-void ExibeEntrada(struct ENTRADA_FINAL coisa){
+void ExibeEntrada(ENTRADA_FINAL coisa){
     printf("ID: %d\n",coisa.ID);
     if (coisa.APAGADO){
         printf("Foi apagado/deve ser apagado \n");
