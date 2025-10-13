@@ -122,10 +122,10 @@ void preenche_ENTRADA(ENTRADA_FINAL* ptr,int ARR_TIPOS[], int arr[],char nomes[]
     strncpy(ptr->cor,nomes[1],ESPACO);
     ptr->preco=arr[0];
     if(ptr->classe==0){
-        preencheMotorizado(&(ptr->motorizado),ARR_TIPOS[2],arr,nomes);
+        preencheMotorizado(&(ptr->motorizado),ARR_TIPOS[3],arr,nomes);
     }
     if (ptr->classe==1){
-        preencheManual(&(ptr->manual),ARR_TIPOS[2],arr,nomes);
+        preencheManual(&(ptr->manual),ARR_TIPOS[3],arr,nomes);
     }
 }
 
