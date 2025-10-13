@@ -1,4 +1,0 @@
-Vamos registrar aqui o que for interessante deixar descatado para ser feito ao longo do projeto.
-
-
-- É importante sempre documentarmos os códigos que estivermos fazendo para facilitar o trabalho em equipe
