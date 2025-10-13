@@ -1,4 +1,4 @@
-#include "entrada_struct.h"
+#include "repositorio\include\entrada_struct.h"
 
 void leMotorizado(struct Motorizado coisa,FILE* f)
 { 
