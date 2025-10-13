@@ -59,14 +59,14 @@ void leManual(struct Manual coisa,FILE* f)
   }
 }
 
-void leEntrada(struct ENTRADA_FINAL teste, FILE* f)
+void leEntrada(ENTRADA_FINAL teste, FILE* f)
 {
   //Lê a região do arquivo referente ao ID informado pela estrutura
   //Assume todas entradas de tamanho igual(140), FILE* em modo rb+ ou wb+ 
   //Esse metodo de calculo impede de tentar truncar strings com menos de 25 chars
   //Em troca, acesso de entradas fica em O(1) em vez de O(n)
 
-  fseek(f, sizeof(struct ENTRADA_FINAL) * teste.ID, SEEK_SET); // Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao ID
+  fseek(f, sizeof(ENTRADA_FINAL) * teste.ID, SEEK_SET); // Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao ID
 
   fread(&teste.ID, sizeof(int), 1, f);
   fread(&teste.APAGADO, sizeof(int), 1, f);
