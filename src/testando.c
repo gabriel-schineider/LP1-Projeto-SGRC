@@ -6,7 +6,7 @@ int main(void){
     char nomes[3][ESPACO];
     int tipo=moto;
     char guidom[]="Borracha legal";
-    
+    int pressao[]={30,28};
 }
 
 

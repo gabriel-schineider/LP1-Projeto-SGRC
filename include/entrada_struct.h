@@ -50,7 +50,7 @@ struct Motorizado{
 
 void preencheMotorizado(struct Motorizado* ptr,int tipo, int arr[], char nomes[][ESPACO]){ //funcao p preencher motorizados
     ptr->tipo=tipo; //pega vetor de numeros e vetor de strings para preencher, ordem importa! olhar os indices usados, sao arbitrarios
-    strncpy(ptr->combustivel,nomes[3],ESPACO);
+    strncpy(ptr->combustivel,nomes[2],ESPACO);
     switch (ptr->tipo){
         case moto: 
             strncpy(ptr->moto.guidom,nomes[3],ESPACO);
@@ -82,17 +82,17 @@ void preencheMotorizado(struct Motorizado* ptr,int tipo, int arr[], char nomes[]
 
 void preencheManual(struct Manual* ptr,int tipo, int arr[],char nomes[][ESPACO]){
     ptr->tipo=tipo;
-    strncpy(ptr->modelo,nomes[2],ESPACO); //nomes 1 e 2 reservado para nome e preco
+    strncpy(ptr->modelo,nomes[2],ESPACO); //nomes 0 e 1 reservado para nome e preco
     switch (ptr->tipo){
         case bike: 
-            strncpy(ptr->bike.suspensao,nomes[1],ESPACO);
+            strncpy(ptr->bike.suspensao,nomes[3],ESPACO);
             ptr->bike.diam_roda=arr[1]; //olhar aqui para padrao de input p preencher skate. arr[0] reservado para preco
             ptr->bike.marchas=arr[2];
             break;
         case skate:
             ptr->skate.comprimento=arr[1];
             ptr->skate.diam_roda=arr[2];
-            strncpy(ptr->skate.tipo_roda,nomes[1],ESPACO);
+            strncpy(ptr->skate.tipo_roda,nomes[3],ESPACO);
             break;
     }
 }
