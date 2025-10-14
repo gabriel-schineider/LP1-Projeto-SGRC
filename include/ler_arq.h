@@ -1,4 +1,4 @@
-#include "/home/ime/LP1-Projeto-SGRC/include/entrada_struct.h"
+#include "C:\LP1\concessionaria\repositorio\include\entrada_struct.h"
 #include <stdio.h>
 #ifndef LER_ARQ_H
 #define LER_ARQ_H
@@ -12,26 +12,26 @@ void leMotorizado(struct Motorizado* coisa,FILE* f)
   fread(coisa->combustivel, sizeof(char), ESPACO, f);
   switch (coisa->tipo)
   {
-    case moto: 
+    case moto_ENUM: 
         fread(&(coisa->moto.guidom), sizeof(char), ESPACO,f);
         fread(&(coisa->moto.offroad), sizeof(int), 1, f);
         fread(&(coisa->moto.pressao_ideal), sizeof(int), 2, f);
         break;
 
-    case carro:
+    case carro_ENUM:
         fread(&(coisa->carro.tracao), sizeof(int), 1, f);
         fread(&(coisa->carro.portas), sizeof(int), 1, f);
         fread(&(coisa->carro.eletrico), sizeof(int), 1, f);
         fread(coisa->carro.pressao_ideal, sizeof(int), 4, f);
         break;
 
-    case barco:
+    case barco_ENUM:
         fread(&(coisa->barco.litragem), sizeof(int), 1, f); 
         fread(coisa->barco.tipo_casco, sizeof(char), ESPACO, f);
         fread(&(coisa->barco.vel_aq_max), sizeof(int), 1, f);
         break;
 
-    case helicoptero:
+    case helicoptero_ENUM:
         fread(&(coisa->helicoptero.pas), sizeof(int), 1, f);
         fread(&(coisa->helicoptero.passageiros), sizeof(int), 1, f);
         fread(&(coisa->helicoptero.altitude_max), sizeof(int), 1, f);
@@ -47,27 +47,33 @@ void leManual(struct Manual* coisa,FILE* f)
   fread(coisa->modelo, sizeof(char), ESPACO, f);
   switch (coisa->tipo)
   {
-    case bike:
+    case bike_ENUM:
         fread(coisa->bike.suspensao, sizeof(char), ESPACO, f);
         fread(&(coisa->bike.diam_roda), sizeof(int), 1, f);
         fread(&(coisa->bike.marchas), sizeof(int), 1, f);
         break;
         
-    case skate:
+    case skate_ENUM:
         fread(&(coisa->skate.comprimento), sizeof(int), 1, f);
         fread(&(coisa->skate.diam_roda), sizeof(int), 1, f);
         fread(coisa->skate.tipo_roda, sizeof(char), ESPACO, f);
         break;
   }
 }
-void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f)
+void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f,int ultimo) 
 {
   //Lê a região do arquivo referente ao ID informado pela estrutura
   //Assume todas entradas de tamanho igual(144), FILE* em modo rb+ ou wb+ 
   //Esse metodo de calculo impede de tentar truncar strings com menos de 25 chars
   //Em troca, acesso de entradas fica em O(1) em vez de O(n)
-
-  fseek(f, (long int) sizeof(ENTRADA_FINAL)*id, SEEK_SET); // Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao ID
+  //ultimo e usado para acessar 
+  if (ultimo){
+    fseek(f,(long int) -sizeof(ENTRADA_FINAL),SEEK_END); //Posiciona cursor no inicio da ultima entrada
+  }
+  else{
+    fseek(f, (long int) sizeof(ENTRADA_FINAL)*id, SEEK_SET);// Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao ID
+  }
+  
 
   fread(&(teste->ID), sizeof(int), 1, f);
   fread(&(teste->APAGADO), sizeof(int), 1, f);
@@ -94,7 +100,7 @@ void BuscarRegistro(FILE* f)
   puts("Informe o ID do registro que deseja buscar: ");
   scanf("%d", id);
 
-  LeEntrada(&registro, id, f);
+  LeEntrada(&registro, id, f,nao);
   ExibeEntrada(registro);
 }
 

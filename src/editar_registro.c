@@ -1,8 +1,8 @@
 // exibir as opções e pedir o campo a ser editado
 // fornecer a opção de edição (sobre-escrita)
 
-#include "/home/ime/aula/LP1-Projeto-SGRC/include/escrita_arq.h"
-#include "/home/ime/aula/LP1-Projeto-SGRC/include/ler_arq.h"
+#include "escrita_arq.h"
+#include "ler_arq.h"
 void preencheUserMotor(struct Motorizado* ptr){
     int tipo;
     printf("Digite 0 para moto, 1 para carro, 2 para barco, 3 para barco\n");
@@ -15,7 +15,7 @@ void preencheUserMotor(struct Motorizado* ptr){
 
     int numero; //sera usado para preencher parametros numericos
     switch (tipo){
-        case moto:
+        case moto_ENUM:
             char guidom[ESPACO];
             printf("Escreva aqui o tipo de guidom da moto, max de caracteres 27\n");
             scanf("%s",guidom);
@@ -32,7 +32,7 @@ void preencheUserMotor(struct Motorizado* ptr){
             }
 
             break;
-        case carro:
+        case carro_ENUM:
             printf("Qual e a tracao(x por x, digite um numero)\n");
             scanf("%d",&numero);
             ptr->carro.tracao=numero;
@@ -51,7 +51,7 @@ void preencheUserMotor(struct Motorizado* ptr){
                 ptr->carro.pressao_ideal[i]=numero;
             }
             break;
-        case barco:
+        case barco_ENUM:
 
             printf("Qual e a litragem do barco(volume)\n");
             scanf("%d",&numero);
@@ -67,7 +67,7 @@ void preencheUserMotor(struct Motorizado* ptr){
             ptr->barco.vel_aq_max=numero;
 
             break;
-        case helicoptero:
+        case helicoptero_ENUM:
             printf("Numero de pas do helicoptero\n");
             scanf("%d",&numero);
             ptr->helicoptero.pas=numero;
@@ -94,7 +94,7 @@ preencheUserManual(struct Manual* ptr){
     strncpy(ptr->modelo,modelo,ESPACO);
     int numero; //usado para preencher parametros numericos
     switch (tipo){
-        case bike:
+        case bike_ENUM:
             char suspensao[ESPACO];
             printf("Escreva tipo de suspensao da bike, max de caracteres 27\n");
             scanf("%s",suspensao);
@@ -109,7 +109,7 @@ preencheUserManual(struct Manual* ptr){
             scanf("%d",&numero);
             ptr->bike.marchas=numero;
             break;
-        case skate:
+        case skate_ENUM:
             printf("Comprimento do skate, em cm\n");
             scanf("%d",&numero);
             ptr->skate.comprimento=numero;

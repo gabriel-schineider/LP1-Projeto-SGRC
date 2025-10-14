@@ -5,13 +5,13 @@
 
 #define ESPACO 28 // definindo aqui para generalizar e facilitar manutenção (caso precisemos alterar o espaço, mudamos apenas uma vez aqui e não em cada local, o que poderia estar sujeito a falhas)
 
-enum Entidade{ motorizado, manual }; //0 e 1 respect.
+enum Entidade{ motorizado_ENUM, manual_ENUM }; //0 e 1 respect.
 
-enum tipo_Motorizado{  moto, carro, barco, helicoptero }; //0,1,2,3 respect.
+enum tipo_Motorizado{  moto_ENUM, carro_ENUM, barco_ENUM, helicoptero_ENUM }; //0,1,2,3 respect.
 
-enum tipo_Manual{ bike, skate };
+enum tipo_Manual{ bike_ENUM, skate_ENUM };
 
-enum Afirmacao{nao,sim};
+enum Afirmacao{nao,sim}; //0 e 1 , booleanos false e true
 
 typedef struct Manual{
     int tipo;
@@ -64,14 +64,14 @@ void preencheMotorizado(Motorizado* ptr,int tipo, int arr[], char nomes[][ESPACO
     ptr->tipo=tipo; //pega vetor de numeros e vetor de strings para preencher, ordem importa! olhar os indices usados, sao arbitrarios
     strncpy(ptr->combustivel,nomes[2],ESPACO);
     switch (ptr->tipo){
-        case moto: 
+        case moto_ENUM: 
             strncpy(ptr->moto.guidom,nomes[3],ESPACO);
             ptr->moto.offroad=arr[1];
             for (int i=0;i<2;i++){
                 ptr->moto.pressao_ideal[i]=arr[1+i];
             }
             break;
-        case carro:
+        case carro_ENUM:
             ptr->carro.tracao=arr[1];
             ptr->carro.portas=arr[2];
             ptr->carro.eletrico=arr[3];
@@ -79,12 +79,12 @@ void preencheMotorizado(Motorizado* ptr,int tipo, int arr[], char nomes[][ESPACO
                 ptr->carro.pressao_ideal[i]=arr[4+i];
             }
             break;
-        case barco:
+        case barco_ENUM:
             ptr->barco.litragem=arr[1];
             strncpy(ptr->barco.tipo_casco, nomes[3], ESPACO); // ambos, a origem e o destino, já são char* (destino é apenas ponteiro para char e origem é ponteiro para array de 25 chars)
             ptr->barco.vel_aq_max=arr[2];
             break;
-        case helicoptero:
+        case helicoptero_ENUM:
             ptr->helicoptero.pas=arr[1];
             ptr->helicoptero.passageiros=arr[2];
             ptr->helicoptero.altitude_max=arr[3];
@@ -95,12 +95,12 @@ void preencheManual(Manual* ptr,int tipo, int arr[],char nomes[][ESPACO]){
     ptr->tipo=tipo;
     strncpy(ptr->modelo,nomes[2],ESPACO); //nomes 0 e 1 reservado para nome e preco
     switch (ptr->tipo){
-        case bike: 
+        case bike_ENUM: 
             strncpy(ptr->bike.suspensao,nomes[3],ESPACO);
             ptr->bike.diam_roda=arr[1]; //olhar aqui para padrao de input p preencher skate. arr[0] reservado para preco
             ptr->bike.marchas=arr[2];
             break;
-        case skate:
+        case skate_ENUM:
             ptr->skate.comprimento=arr[1];
             ptr->skate.diam_roda=arr[2];
             strncpy(ptr->skate.tipo_roda,nomes[3],ESPACO);
@@ -129,7 +129,7 @@ void PreencheEntrada(ENTRADA_FINAL* ptr,int ARR_TIPOS[], int arr[],char nomes[][
 void exibeMotorizado(Motorizado coisa){ 
     printf("Seu combustivel usado eh %s \n",coisa.combustivel);
     switch (coisa.tipo){
-        case moto: //exibir a moto 
+        case moto_ENUM: //exibir a moto 
             printf("Tipo de guidom: %s \n",coisa.moto.guidom);
             if (coisa.moto.offroad){
                 printf("Essa moto eh offroad \n");
@@ -141,7 +141,7 @@ void exibeMotorizado(Motorizado coisa){
                 printf("Pressao ideal do pneu %d: %d PSI", i,coisa.moto.pressao_ideal[i]);
             }
             break;
-        case carro: //exibir carro
+        case carro_ENUM: //exibir carro
             printf("A tracao desse carro eh %d x %d \n",coisa.carro.tracao, coisa.carro.tracao);
             printf("Numero de portas%d \n",coisa.carro.portas);
             if (coisa.moto.offroad){
@@ -154,11 +154,11 @@ void exibeMotorizado(Motorizado coisa){
                 printf("Pressao ideal do pneu %d: %d PSI", i,coisa.carro.pressao_ideal[i]);
             }
             break;
-        case barco:
+        case barco_ENUM:
             printf("Quantos litros este barco desloca: %d \n",coisa.barco.litragem);
             printf("Velocidade maxima (em nos ):%d \n",coisa.barco.vel_aq_max);
             break;
-        case helicoptero:
+        case helicoptero_ENUM:
             printf("Numero de pas: %d \n",coisa.helicoptero.pas);
             printf("Numero de passageiros:%d \n",coisa.helicoptero.passageiros);
             printf("Altitude maxima:%d \n",coisa.helicoptero.altitude_max);
@@ -167,12 +167,12 @@ void exibeMotorizado(Motorizado coisa){
 }
 void exibeManual(Manual coisa){
     switch (coisa.tipo){
-        case bike: 
+        case bike_ENUM: 
             printf("Suspensao : %s \n",coisa.bike.suspensao);
             printf("Diametro da roda: %d\n",coisa.bike.diam_roda); //olhar aqui para padrao de input p preencher skate. arr[0] reservado para preco
             printf("Numero de marchas: %d\n",coisa.bike.marchas);
             break;
-        case skate:
+        case skate_ENUM:
             printf("Comprimento do skate: %d\n",coisa.skate.comprimento);
             printf("Diametro da rodinha: %d\n",coisa.skate.diam_roda);
             printf("Tipo de rodinha: %s\n",coisa.skate.tipo_roda);
