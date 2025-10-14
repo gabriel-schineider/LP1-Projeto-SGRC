@@ -1,8 +1,8 @@
-#include "entrada_struct.h"
+#include "/home/ime/LP1-Projeto-SGRC/include/entrada_struct.h"
 #include <stdio.h>
-
 #ifndef LER_ARQ_H
 #define LER_ARQ_H
+
 void leMotorizado(struct Motorizado* coisa,FILE* f)
 { 
   // Lê um tipo motorizado do arquivo 
@@ -38,7 +38,6 @@ void leMotorizado(struct Motorizado* coisa,FILE* f)
         break;
   }
 }
-
 void leManual(struct Manual* coisa,FILE* f)
 {
   // Lê um tipo manual do arquivo 
@@ -61,11 +60,10 @@ void leManual(struct Manual* coisa,FILE* f)
         break;
   }
 }
-
-void leEntrada(ENTRADA_FINAL* teste,int id, FILE* f)
+void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f)
 {
   //Lê a região do arquivo referente ao ID informado pela estrutura
-  //Assume todas entradas de tamanho igual(140), FILE* em modo rb+ ou wb+ 
+  //Assume todas entradas de tamanho igual(144), FILE* em modo rb+ ou wb+ 
   //Esse metodo de calculo impede de tentar truncar strings com menos de 25 chars
   //Em troca, acesso de entradas fica em O(1) em vez de O(n)
 
@@ -85,6 +83,19 @@ void leEntrada(ENTRADA_FINAL* teste,int id, FILE* f)
   {
     leMotorizado(&(teste->motorizado),f);
   }
+}
+
+
+void BuscarRegistro(FILE* f)
+{
+  // Assume-se a já existência do registro, cuja posição no arquivo encontra-se em (long int)sizeof(ENTRADA_FINAL) * id
+  ENTRADA_FINAL registro; // Variável nova que receberá a cópia das informações do registro já existente
+  long int id; // ID desse registro já existente
+  puts("Informe o ID do registro que deseja buscar: ");
+  scanf("%d", id);
+
+  LeEntrada(&registro, id, f);
+  ExibeEntrada(registro);
 }
 
 #endif

@@ -5,7 +5,8 @@
 
 int main (void)
 {
-  struct ENTRADA_FINAL registros[1000];
+  struct ENTRADA_FINAL registros[100];
+
   puts("Seja bem-vindo(a) ao XXXXX_nome-do-nosso-sistema_XXXXX, o Sistema de Gerenciamento de Registros para Concesionárias !");
 
   exibeOpcoes(); // encontra-se em "fluxo.c"

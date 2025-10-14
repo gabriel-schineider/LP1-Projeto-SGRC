@@ -50,7 +50,7 @@ void escreveManual(struct Manual coisa,FILE* f){
 }
 void EscreverEntrada(struct ENTRADA_FINAL teste, FILE* f){
     //Escreve uma entrada na ID informada
-    //Assume todas entradas de tamanho igual(140), FILE* em modo rb+ ou wb+ 
+    //Assume todas entradas de tamanho igual(144), FILE* em modo rb+ ou wb+ 
     //Esse metodo de calculo impede de tentar truncar strings com menos de 25 chars
     //Em troca, acesso de entradas fica  em O(1) em vez de O(n)
 

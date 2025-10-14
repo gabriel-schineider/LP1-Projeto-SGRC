@@ -13,7 +13,7 @@ enum tipo_Manual{ bike, skate };
 
 enum Afirmacao{nao,sim};
 
-struct Manual{
+typedef struct Manual{
     int tipo;
     char modelo[ESPACO];
     union{
@@ -26,8 +26,8 @@ struct Manual{
             char tipo_roda[ESPACO];
         } skate;
     };
-};
-struct Motorizado{
+} Manual;
+typedef struct Motorizado{
     int tipo;
     char combustivel[ESPACO];
     union {
@@ -46,9 +46,21 @@ struct Motorizado{
             int pas; int passageiros; int altitude_max;
         } helicoptero;
     };
-};
+} Motorizado;
+typedef struct ENTRADA_FINAL{
+    int ID;
+    int APAGADO;
+    int classe;
+    char nome[ESPACO];
+    char cor[ESPACO];
+    int preco;
+    union{
+        struct Motorizado motorizado; //classe 0
+        struct Manual manual;  //classe 1
+    };
+} ENTRADA_FINAL;
 
-void preencheMotorizado(struct Motorizado* ptr,int tipo, int arr[], char nomes[][ESPACO]){ //funcao p preencher motorizados
+void preencheMotorizado(Motorizado* ptr,int tipo, int arr[], char nomes[][ESPACO]){ //funcao p preencher motorizados
     ptr->tipo=tipo; //pega vetor de numeros e vetor de strings para preencher, ordem importa! olhar os indices usados, sao arbitrarios
     strncpy(ptr->combustivel,nomes[2],ESPACO);
     switch (ptr->tipo){
@@ -79,8 +91,7 @@ void preencheMotorizado(struct Motorizado* ptr,int tipo, int arr[], char nomes[]
             break;
     }
 }
-
-void preencheManual(struct Manual* ptr,int tipo, int arr[],char nomes[][ESPACO]){
+void preencheManual(Manual* ptr,int tipo, int arr[],char nomes[][ESPACO]){
     ptr->tipo=tipo;
     strncpy(ptr->modelo,nomes[2],ESPACO); //nomes 0 e 1 reservado para nome e preco
     switch (ptr->tipo){
@@ -96,21 +107,7 @@ void preencheManual(struct Manual* ptr,int tipo, int arr[],char nomes[][ESPACO])
             break;
     }
 }
-
-typedef struct ENTRADA_FINAL{
-    int ID;
-    int APAGADO;
-    int classe;
-    char nome[ESPACO];
-    char cor[ESPACO];
-    int preco;
-    union{
-        struct Motorizado motorizado; //classe 0
-        struct Manual manual;  //classe 1
-    };
-} ENTRADA_FINAL;
-
-void preenche_ENTRADA(ENTRADA_FINAL* ptr,int ARR_TIPOS[], int arr[],char nomes[][ESPACO]){
+void PreencheEntrada(ENTRADA_FINAL* ptr,int ARR_TIPOS[], int arr[],char nomes[][ESPACO]){
     //arr de inputs numericos, olhar preenche de cada subtipo para olhar ordem certa
     //nomes array 2d com strings usados para preencher campos com string, olhar preencher p ordem
     //tamanho maximo de 24 caracteres para cada string, escolhido arbitrariamente
@@ -129,7 +126,7 @@ void preenche_ENTRADA(ENTRADA_FINAL* ptr,int ARR_TIPOS[], int arr[],char nomes[]
     }
 }
 
-void ExibeMotorizado(struct Motorizado coisa){ 
+void exibeMotorizado(Motorizado coisa){ 
     printf("Seu combustivel usado eh %s \n",coisa.combustivel);
     switch (coisa.tipo){
         case moto: //exibir a moto 
@@ -168,7 +165,7 @@ void ExibeMotorizado(struct Motorizado coisa){
             break;
     }
 }
-void ExibeManual(struct Manual coisa){
+void exibeManual(Manual coisa){
     switch (coisa.tipo){
         case bike: 
             printf("Suspensao : %s \n",coisa.bike.suspensao);
@@ -195,10 +192,10 @@ void ExibeEntrada(ENTRADA_FINAL coisa){
     printf("Cor:  %s \n",coisa.cor);
     printf("Preco:  %d \n",coisa.preco);
     if (coisa.classe){
-        ExibeManual(coisa.manual);
+        exibeManual(coisa.manual);
     }
     else {
-        ExibeMotorizado(coisa.motorizado);
+        exibeMotorizado(coisa.motorizado);
     }
 }
 
