@@ -7,10 +7,13 @@ void preencheUserMotor(struct Motorizado* ptr){
     int tipo;
     printf("Digite 0 para moto, 1 para carro, 2 para barco, 3 para barco\n");
     scanf("%d",&tipo);
+
     char combustivel[ESPACO];
     printf("Escreva aqui o tipo de combustivel, num max de caracteres 27\n");
     scanf("%s",combustivel);
     strncpy(ptr->combustivel,combustivel,ESPACO);
+
+    int numero; //sera usado para preencher parametros numericos
     switch (tipo){
         case moto:
             char guidom[ESPACO];
@@ -18,74 +21,64 @@ void preencheUserMotor(struct Motorizado* ptr){
             scanf("%s",guidom);
             strncpy(ptr->moto.guidom,guidom,ESPACO);
 
-            int offroad;
             printf("A moto eh offroad? 1 para sim, 0 p nao\n");
-            scanf("%d",&offroad);
-            ptr->moto.offroad=offroad;
+            scanf("%d",&numero);
+            ptr->moto.offroad=numero;
 
             for (int i=0;i<2;i++){
-                int pressao;
                 printf("Pressao ideal do pneu %d\n",i);
-                scanf("%d",&pressao);
-                ptr->moto.pressao_ideal[i]=pressao;
+                scanf("%d",&numero);
+                ptr->moto.pressao_ideal[i]=numero;
             }
 
             break;
         case carro:
-            int tracao;
             printf("Qual e a tracao(x por x, digite um numero)\n");
-            scanf("%d",tracao);
-            ptr->carro.tracao=tracao;
+            scanf("%d",&numero);
+            ptr->carro.tracao=numero;
 
-            int portas;
             printf("Quantas portas?\n");
-            scanf("%d",&portas);
-            ptr->carro.portas=portas;
+            scanf("%d",&numero);
+            ptr->carro.portas=numero;
 
-            int eletrico;
             printf("O carro eh eletrico? 1 para sim 0 para nao\n");
-            scanf("%d",&eletrico);
-            ptr->carro.eletrico=eletrico;
+            scanf("%d",&numero);
+            ptr->carro.eletrico=numero;
+
             for (int i=0;i<4;i++){
-                int pressao;
                 printf("Pressao ideal do pneu %d\n",i);
-                scanf("%d",&pressao);
-                ptr->carro.pressao_ideal[i]=pressao;
+                scanf("%d",&numero);
+                ptr->carro.pressao_ideal[i]=numero;
             }
             break;
         case barco:
-            int litragem;
+
             printf("Qual e a litragem do barco(volume)\n");
-            scanf("%d",litragem);
-            ptr->barco.litragem=litragem;
+            scanf("%d",&numero);
+            ptr->barco.litragem=numero;
 
             char tipo_casco[ESPACO];
             printf("Escreva tipo de casco, max de caracteres 27\n");
             scanf("%s",tipo_casco);
             strncpy(ptr->barco.tipo_casco,tipo_casco,ESPACO);
 
-            int vel_aq_max;
             printf("Qual e a velocidade maxima em nos do barco\n");
-            scanf("%d",litragem);
-            ptr->barco.litragem=litragem;
-            ptr->barco.vel_aq_max=vel_aq_max;
+            scanf("%d",&numero);
+            ptr->barco.vel_aq_max=numero;
 
             break;
         case helicoptero:
-            int pas;
             printf("Numero de pas do helicoptero\n");
-            scanf("%d",pas);
-            ptr->helicoptero.pas=pas;
+            scanf("%d",&numero);
+            ptr->helicoptero.pas=numero;
             
-            int passageiros;
             printf("Numero de passageiros max do helicoptero\n");
-            scanf("%d",passageiros);
-            ptr->helicoptero.passageiros=passageiros;
+            scanf("%d",&numero);
+            ptr->helicoptero.passageiros=numero;
 
-            int altitude_max;
             printf("Altitude maxima do helicoptero em metros\n");
-            scanf("%d",altitude_max);
-            ptr->helicoptero.altitude_max=altitude_max;
+            scanf("%d",&numero);
+            ptr->helicoptero.altitude_max=numero;
 
             break;
     }
@@ -94,10 +87,12 @@ preencheUserManual(struct Manual* ptr){
     int tipo;
     printf("Digite 0 para bike, 1 para skate\n");
     scanf("%d",&tipo);
+
     char modelo[ESPACO];
     printf("Escreva aqui o modelo, num max de caracteres 27\n");
     scanf("%s",modelo);
     strncpy(ptr->modelo,modelo,ESPACO);
+    int numero; //usado para preencher parametros numericos
     switch (tipo){
         case bike:
             char suspensao[ESPACO];
@@ -105,26 +100,23 @@ preencheUserManual(struct Manual* ptr){
             scanf("%s",suspensao);
             strncpy(ptr->bike.suspensao,suspensao,ESPACO);
 
-            int diam_roda;
-            printf("Diametro das rodas da bike\n");
-            scanf("%d",diam_roda);
-            ptr->bike.diam_roda=diam_roda; 
 
-            int marchas;
+            printf("Diametro das rodas da bike\n");
+            scanf("%d",&numero);
+            ptr->bike.diam_roda=numero; 
+
             printf("Numero de marchas da bike\n");
-            scanf("%d",marchas);
-            ptr->bike.marchas=marchas;
+            scanf("%d",&numero);
+            ptr->bike.marchas=numero;
             break;
         case skate:
-            int comprimento;
             printf("Comprimento do skate, em cm\n");
-            scanf("%d",comprimento);
-            ptr->skate.comprimento=comprimento;
+            scanf("%d",&numero);
+            ptr->skate.comprimento=numero;
 
-            int diam_roda;
             printf("Diametro das rodas do skate\n");
-            scanf("%d",diam_roda);
-            ptr->skate.diam_roda=diam_roda; 
+            scanf("%d",&numero);
+            ptr->skate.diam_roda=numero; 
 
             char tipo_roda[ESPACO];
             printf("Escreva o tipo de roda do skate, max 27 caracteres\n");
@@ -163,12 +155,12 @@ void ModificarEntrada(ENTRADA_FINAL* coisa){
     coisa->classe=classe;
 
     char nome[ESPACO];
-    printf("Escreva o nome do produto max de caracteres 27\n");
+    printf("Escreva o nome do produto, max de caracteres 27\n");
     scanf("%s",nome);
     strncpy(coisa->nome,nome,ESPACO);
 
     char cor[ESPACO];
-    printf("Escreva a cor do produto max de caracteres 27\n");
+    printf("Escreva a cor do produto, max de caracteres 27\n");
     scanf("%s",cor);
     strncpy(coisa->cor,cor,ESPACO);
 
@@ -188,7 +180,7 @@ void ModificarEntrada(ENTRADA_FINAL* coisa){
 void EditarRegistro(FILE* arquivo){
     int id_editar;
     printf("Informe a ID da entrada que voce quer editar:");
-    scanf("%d",id_editar);
+    scanf("%d",&id_editar);
     ENTRADA_FINAL modificado;
 
     leEntrada(&modificado,id_editar,arquivo);
