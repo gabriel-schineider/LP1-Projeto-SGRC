@@ -137,7 +137,7 @@ void ExibeMotorizado(struct Motorizado coisa){
                 printf("Essa moto nao eh offroad\n");
             }
             for (int i=0;i<2;i++){
-                printf("Pressao ideal do pneu %d: %d PSI", i,coisa.pressao_ideal[i]);
+                printf("Pressao ideal do pneu %d: %d PSI", i,coisa.moto.pressao_ideal[i]);
             }
             break;
         case carro: //exibir carro
@@ -150,7 +150,7 @@ void ExibeMotorizado(struct Motorizado coisa){
                 printf("Essa moto nao eh eletrico\n");
             }
             for (int i=0;i<4;i++){
-                printf("Pressao ideal do pneu %d: %d PSI", i,coisa.pressao_ideal[i]);
+                printf("Pressao ideal do pneu %d: %d PSI", i,coisa.carro.pressao_ideal[i]);
             }
             break;
         case barco:
