@@ -186,6 +186,7 @@ void ExibeEntrada(ENTRADA_FINAL coisa){
     printf("ID: %d\n",coisa.ID);
     if (coisa.APAGADO){
         printf("Foi apagado/deve ser apagado \n");
+        return;
     }
     else{
         printf("Nao foi apagado \n");
@@ -200,5 +201,6 @@ void ExibeEntrada(ENTRADA_FINAL coisa){
         ExibeMotorizado(coisa.motorizado);
     }
 }
+
 
 #endif
