@@ -179,11 +179,13 @@ void ModificarEntrada(ENTRADA_FINAL* coisa){
 
 void EditarRegistro(FILE* arquivo){
     int id_editar;
-    printf("Informe a ID da entrada que voce quer editar:");
+    printf("Informe a ID da entrada que voce quer editar:\n");
     scanf("%d",&id_editar);
     ENTRADA_FINAL modificado;
 
     leEntrada(&modificado,id_editar,arquivo);
     ModificarEntrada(&modificado);
     EscreverEntrada(modificado,arquivo);
+    printf("Entrada modificada:\n");
+    ExibeEntrada(modificado);
 }

@@ -11,7 +11,7 @@ int main ()
 
     puts("Qual é a entrada ? ");
     char entrada[12];
-    scanf("%12s", entrada);
+    scanf("%11s", entrada);
 
     if (entrada == "moto")
     {
