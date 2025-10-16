@@ -21,7 +21,7 @@ void RemoverRegistro(int indice, FILE *f) //só muda o campo APAGADO pra 1, não
 /*não consegui pensar num jeito muito bom pra remover os registros dentro do próprio arquivo,
 então aqui eu passo de um arquivo pra outro somente se a flag apagado for igual a 0.
 e depois eu apago o arquivo anterior e renomeio o novo pra ficar igual o anterior*/
-void Permanent_RM_Regist(int indice, char Caminho_Do_Arquivo[]) 
+FILE *fTemporario Permanent_RM_Regist(int indice, char Caminho_Do_Arquivo[]) 
 {
     FILE *fOriginal = fopen(Caminho_Do_Arquivo, "rb");  
     if(!fOriginal)
@@ -64,4 +64,6 @@ void Permanent_RM_Regist(int indice, char Caminho_Do_Arquivo[])
 
         remove("temporário.bin");
     }
+
+    return fTemporario;
 }
