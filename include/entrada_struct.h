@@ -49,6 +49,7 @@ typedef struct Motorizado{
 } Motorizado;
 typedef struct ENTRADA_FINAL{
     int ID;
+    int indice;
     int APAGADO;
     int classe;
     char nome[ESPACO];
@@ -113,16 +114,17 @@ void PreencheEntrada(ENTRADA_FINAL* ptr,int ARR_TIPOS[], int arr[],char nomes[][
     //tamanho maximo de 24 caracteres para cada string, escolhido arbitrariamente
     //ARR_TIPOS se refere ao ID, se esta apagado, se e manual ou n, e qual seu tipo dentro de manual/nao nessa ordem
     ptr->ID=ARR_TIPOS[0];
-    ptr->APAGADO=ARR_TIPOS[1];
-    ptr->classe=ARR_TIPOS[2]; 
+    ptr->indice=ARR_TIPOS[1];
+    ptr->APAGADO=ARR_TIPOS[2];
+    ptr->classe=ARR_TIPOS[3]; 
     strncpy(ptr->nome,nomes[0],ESPACO);
     strncpy(ptr->cor,nomes[1],ESPACO);
     ptr->preco=arr[0];
     if(ptr->classe==0){
-        preencheMotorizado(&(ptr->motorizado),ARR_TIPOS[3],arr,nomes);
+        preencheMotorizado(&(ptr->motorizado),ARR_TIPOS[4],arr,nomes);
     }
     if (ptr->classe==1){
-        preencheManual(&(ptr->manual),ARR_TIPOS[3],arr,nomes);
+        preencheManual(&(ptr->manual),ARR_TIPOS[4],arr,nomes);
     }
 }
 

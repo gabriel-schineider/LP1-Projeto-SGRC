@@ -3,7 +3,7 @@
 #ifndef ESCRITA_ARQ_H
 #define ESCRITA_ARQ_H
 
-void escreveMotorizado(struct Motorizado coisa,FILE* f){ 
+void escreveMotorizado( Motorizado coisa,FILE* f){ 
     //escreve um motorizado no arquivo, ja assume offset certo
     fwrite(&coisa.tipo,sizeof(int),1,f);
     fwrite(coisa.combustivel,sizeof(char),ESPACO,f);//atentar ao '\0' na hr de ler isso p C de volta, isso vai escrever lixo
@@ -31,7 +31,7 @@ void escreveMotorizado(struct Motorizado coisa,FILE* f){
             break;
     }
 }
-void escreveManual(struct Manual coisa,FILE* f){
+void escreveManual(Manual coisa,FILE* f){
     //escreve um tipo manual no arquivo, assume que ja esta no offset certo
     fwrite(&coisa.tipo,sizeof(int),1,f);
     fwrite(coisa.modelo,sizeof(char),ESPACO,f);
@@ -48,13 +48,13 @@ void escreveManual(struct Manual coisa,FILE* f){
             break;
     }
 }
-void EscreverEntrada(struct ENTRADA_FINAL teste, FILE* f){
+void EscreverEntrada(ENTRADA_FINAL teste, FILE* f){
     //Escreve uma entrada na ID informada
     //Assume todas entradas de tamanho igual(144), FILE* em modo rb+ ou wb+ 
     //Esse metodo de calculo impede de tentar truncar strings com menos de 25 chars
     //Em troca, acesso de entradas fica  em O(1) em vez de O(n)
 
-    fseek(f,(long int) sizeof(struct ENTRADA_FINAL)*teste.ID,SEEK_SET); 
+    fseek(f,(long int) sizeof(ENTRADA_FINAL)*teste.indice,SEEK_SET); 
     fwrite(&teste.ID,sizeof(int),1,f);
     fwrite(&teste.APAGADO,sizeof(int),1,f);
     fwrite(&teste.classe,sizeof(int),1,f);
