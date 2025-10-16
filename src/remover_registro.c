@@ -3,12 +3,12 @@
 #include<string.h>
 #include<stdlib.h>
 
-void RemoverRegistro(int ID, FILE *f) //só muda o campo APAGADO pra 1, não remove realmente do arquivo
+void RemoverRegistro(int indice, FILE *f) //só muda o campo APAGADO pra 1, não remove realmente do arquivo
 {
     int removido = 1;
     
-    long int PosicaoDoRegistro = sizeof(ENTRADA_FINAL) * ID;
-    long int PosicaoParaRemover = (PosicaoDoRegistro + sizeof(int)); //pula o ID
+    long int PosicaoDoRegistro = sizeof(ENTRADA_FINAL) * indice;
+    long int PosicaoParaRemover = (PosicaoDoRegistro + sizeof(int)); //pula o indice
 
     fseek(f,PosicaoParaRemover, SEEK_SET);
     fwrite(&removido, sizeof(int), 1, f);
@@ -17,11 +17,11 @@ void RemoverRegistro(int ID, FILE *f) //só muda o campo APAGADO pra 1, não rem
 }
 
 //apenas uma ideia, ainda posso alterar algo depois.
-//realmente remove o registro do arquivp, e muda o ID dos que vem em seguida
+//realmente remove o registro do arquivp, e muda o indice dos que vem em seguida
 /*não consegui pensar num jeito muito bom pra remover os registros dentro do próprio arquivo,
 então aqui eu passo de um arquivo pra outro somente se a flag apagado for igual a 0.
 e depois eu apago o arquivo anterior e renomeio o novo pra ficar igual o anterior*/
-void Permanent_RM_Regist(int ID, char Caminho_Do_Arquivo[]) 
+void Permanent_RM_Regist(int indice, char Caminho_Do_Arquivo[]) 
 {
     FILE *fOriginal = fopen(Caminho_Do_Arquivo, "rb");  
     if(!fOriginal)
@@ -37,15 +37,15 @@ void Permanent_RM_Regist(int ID, char Caminho_Do_Arquivo[])
     }
 
     ENTRADA_FINAL registro;
-    int NovoId = 0;
+    int NovoIndice = 0;
 
     while(fread(&registro, sizeof(ENTRADA_FINAL), 1, fOriginal ) == 1)  //pra verificar se obteve sucesso
     {
         if(registro.APAGADO == 0)
         {
-            registro.ID = NovoId;   //assumoindo que o primeiro ID seja 0.
+            registro.indice = Novoindice;   //assumoindo que o primeiro indice seja 0.
             fwrite(&registro, sizeof(ENTRADA_FINAL), 1, fTemporario);
-            NovoId++;
+            NovoIndice++;
         }
     }
     
