@@ -54,8 +54,9 @@ void EscreverEntrada(ENTRADA_FINAL teste, FILE* f){
     //Esse metodo de calculo impede de tentar truncar strings com menos de 25 chars
     //Em troca, acesso de entradas fica  em O(1) em vez de O(n)
 
-    fseek(f,(long int) sizeof(ENTRADA_FINAL)*teste.indice,SEEK_SET); 
+    fseek(f,(long int) INDICE_INICIO+sizeof(ENTRADA_FINAL)*teste.indice,SEEK_SET); 
     fwrite(&teste.ID,sizeof(int),1,f);
+    fwrite(&teste.indice,sizeof(int),1,f);
     fwrite(&teste.APAGADO,sizeof(int),1,f);
     fwrite(&teste.classe,sizeof(int),1,f);
     fwrite(&teste.nome,sizeof(char),ESPACO,f); //se atentar ao '\0' na hora de ler de volta para um programa em C, isso vai escrever lixo

@@ -3,6 +3,98 @@
 #include "C:\\LP1\\concessionaria\\repositorio\\include\\ler_arq.h"
 #include "C:\\LP1\\concessionaria\\repositorio\\include\\escrita_arq.h"
 
+void CriarRegistro(arquivo){
+    puts("Entre 0 p moto, 1 p carro, 2 p barco, 3 p helicoptero, 4 p bike, 5 p skate ? ");
+    int entrada_USER;
+    
+    scanf("%d", &entrada_USER);
+    ENTRADA_FINAL ultimo;
+    int ID=pegarUltimoID(arquivo)+1; //pega o ultimo ID do arquivo, e adiciona um a mais para criar um novo registro
+
+    ENTRADA_FINAL moto;
+    int ARR_TIPOS[] = {ID, 0, 0, 0}; // ID ; APAGADO ; classe ; subclasse 
+    int nomes[4][ESPACO];
+    strncpy(nomes[0], "Motinha", ESPACO); // nome
+    strncpy(nomes[1], "Preta", ESPACO); // cor
+    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
+    strncpy(nomes[3], "Couro", ESPACO); // guidom
+    int arr[] =  {8500, 1, {8, 12}}; // preco ; offroad ; pressao_ideal[2]
+    PreencheEntrada(&moto,ARR_TIPOS,arr,nomes);
+    ExibeEntrada(moto); //mostra a entrada a ser escrita
+
+    ENTRADA_FINAL carro;
+    int ARR_TIPOS[] = {ID, 0, motorizado_ENUM, carro_ENUM}; // ID ; APAGADO ; classe ; subclasse 
+    int nomes[3][ESPACO];
+    strncpy(nomes[0], "Carrinho", ESPACO); // nome
+    strncpy(nomes[1], "Cinza", ESPACO); // cor
+    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
+    int arr[] =  {18500, 4, 4, 1, {8, 8, 12, 12}}; // preco ; tracao ; portas ; eletrico ; pressao_ideal[4]
+    PreencheEntrada(&carro,ARR_TIPOS,arr,nomes);
+    ExibeEntrada(carro);
+
+    ENTRADA_FINAL barco;
+    int ARR_TIPOS[] = {ID, 0, 0, 2}; // ID ; APAGADO ; classe ; subclasse 
+    int nomes[4][ESPACO];
+    strncpy(nomes[0], "Barquinho", ESPACO); // nome
+    strncpy(nomes[1], "Branco", ESPACO); // cor
+    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
+    strncpy(nomes[3], "Amadeirado", ESPACO); // tipo_casco
+    int arr[] =  {958500, 250, 320}; // preco ; litragem ; vel_aq_max
+    PreencheEntrada(&barco,ARR_TIPOS,arr,nomes);
+    
+    ENTRADA_FINAL helicoptero;
+    int ARR_TIPOS[] = {ID, 0, 0, 3}; // ID ; APAGADO ; classe ; subclasse 
+    int nomes[4][ESPACO];
+    strncpy(nomes[0], "Helicopterozinho", ESPACO); // nome
+    strncpy(nomes[1], "Preto", ESPACO); // cor
+    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
+    int arr[] =  {1518500, 6, 6, 6000}; // preco ; pas ; passageiros ; altitude_max
+    PreencheEntrada(&helicoptero,ARR_TIPOS,arr,nomes);
+
+    ENTRADA_FINAL bike;
+    int ARR_TIPOS[] = {ID, 0, 1, 0}; // ID ; APAGADO ; classe ; subclasse 
+    int nomes[4][ESPACO];
+    strncpy(nomes[0], "Bikezinha", ESPACO); // nome
+    strncpy(nomes[1], "Vermelha", ESPACO); // cor
+    strncpy(nomes[2], "Vintage", ESPACO); // modelo
+    strncpy(nomes[3], "Alta", ESPACO); // suspensao
+    int arr[] =  {1200, 50, 6};  // preco ; diam_roda ; marchas
+    PreencheEntrada(&bike,ARR_TIPOS,arr,nomes);
+
+
+    ENTRADA_FINAL skate;
+    int ARR_TIPOS[] = {ID, 0, 1, 1}; // ID ; APAGADO ; classe ; subclasse 
+    int nomes[4][ESPACO];
+    strncpy(nomes[0], "Skatezinho", ESPACO); // nome
+    strncpy(nomes[1], "Preto", ESPACO); // cor
+    strncpy(nomes[2], "Street", ESPACO);// modelo
+    strncpy(nomes[3], "Borracha", ESPACO); // tipo_roda
+    int arr[] =  {1200, 110, 10}; // preco ; comprimento ; diam_roda
+    PreencheEntrada(&skate,ARR_TIPOS,arr,nomes);
+    
+    switch (entrada_USER){
+        case 0:
+            EscreverEntrada(moto,arquivo);
+            break;
+        case 1:
+            EscreverEntrada(carro, arquivo);
+            break;
+        case 2:
+            EscreverEntrada(barco,arquivo);
+            break;
+        case 3:
+            EscreverEntrada(bike,arquivo);
+            break;
+        case 4:
+            EscreverEntrada(skate,arquivo);
+            break;
+        default:
+            printf("Deu errado(provavelmente input errado)\n");
+    }
+
+
+}
+
 int main ()
 {
     ENTRADA_FINAL registros_teste[6];
@@ -36,7 +128,11 @@ int main ()
                 break;
             
             case(4):
-                EditarRegistro(arquivo); //estou abusando do fato que isso tambem consegue deletar
+                int id;
+                printf("Qual id voce quer remover do arquivo?");
+                scanf("%d",&id);
+                int indice=pegaIndice(id)
+                RemoverRegistro(indice,arquivo); //estou abusando do fato que isso tambem consegue deletar
                 break;
 
             case(5):
@@ -49,91 +145,7 @@ int main ()
         }
     }
     fclose(arquivo);
-    // vou usar esses registros para testas as funções
+    // vou usar esses registros para testar as funções
 
     return 0;
-}
-void CriarRegistro(arquivo){
-    puts("Qual é a entrada ? ");
-    char entrada[12];
-    
-    scanf("%11s", entrada);
-    ENTRADA_FINAL ultimo;
-    LeEntrada(&ultimo,0,arquivo,sim); //entrada*, id nao importante, arquivo, ultimo?==1(enum sim)
-    int ID=ultimo.ID;
-    if (entrada == "moto")
-    {
-    ENTRADA_FINAL moto;
-    int ARR_TIPOS[] = {ID+1, 0, 0, 0}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
-    strncpy(nomes[0], "Motinha", ESPACO); // nome
-    strncpy(nomes[1], "Preta", ESPACO); // cor
-    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
-    strncpy(nomes[3], "Couro", ESPACO); // guidom
-    int arr[] =  {8500, 1, {8, 12}}; // preco ; offroad ; pressao_ideal[2]
-    PreencheEntrada(&moto,ARR_TIPOS,arr,nomes);
-    }
-
-    if (entrada == "carro")
-    {
-    ENTRADA_FINAL carro;
-    int ARR_TIPOS[] = {ID+1, 0, motorizado_ENUM, carro_ENUM}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[3][ESPACO];
-    strncpy(nomes[0], "Carrinho", ESPACO); // nome
-    strncpy(nomes[1], "Cinza", ESPACO); // cor
-    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
-    int arr[] =  {18500, 4, 4, 1, {8, 8, 12, 12}}; // preco ; tracao ; portas ; eletrico ; pressao_ideal[4]
-    PreencheEntrada(&carro,ARR_TIPOS,arr,nomes);
-    }
-
-    if (entrada == "barco")
-    {
-    ENTRADA_FINAL barco;
-    int ARR_TIPOS[] = {ID+1, 0, 0, 2}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
-    strncpy(nomes[0], "Barquinho", ESPACO); // nome
-    strncpy(nomes[1], "Branco", ESPACO); // cor
-    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
-    strncpy(nomes[3], "Amadeirado", ESPACO); // tipo_casco
-    int arr[] =  {958500, 250, 320}; // preco ; litragem ; vel_aq_max
-    PreencheEntrada(&barco,ARR_TIPOS,arr,nomes);
-    }
-
-    if (entrada == "helicoptero")
-    {
-    ENTRADA_FINAL helicoptero;
-    int ARR_TIPOS[] = {ID+1, 0, 0, 3}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
-    strncpy(nomes[0], "Helicopterozinho", ESPACO); // nome
-    strncpy(nomes[1], "Preto", ESPACO); // cor
-    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
-    int arr[] =  {1518500, 6, 6, 6000}; // preco ; pas ; passageiros ; altitude_max
-    PreencheEntrada(&helicoptero,ARR_TIPOS,arr,nomes);
-    }
-
-    if ("entrada" == "bike")
-    {
-    ENTRADA_FINAL bike;
-    int ARR_TIPOS[] = {ID+1, 0, 1, 0}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
-    strncpy(nomes[0], "Bikezinha", ESPACO); // nome
-    strncpy(nomes[1], "Vermelha", ESPACO); // cor
-    strncpy(nomes[2], "Vintage", ESPACO); // modelo
-    strncpy(nomes[3], "Alta", ESPACO); // suspensao
-    int arr[] =  {1200, 50, 6};  // preco ; diam_roda ; marchas
-    PreencheEntrada(&bike,ARR_TIPOS,arr,nomes);
-    }
-
-    if ("entrada" == "skate")
-    {
-    ENTRADA_FINAL skate;
-    int ARR_TIPOS[] = {ID+1, 0, 1, 1}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
-    strncpy(nomes[0], "Skatezinho", ESPACO); // nome
-    strncpy(nomes[1], "Preto", ESPACO); // cor
-    strncpy(nomes[2], "Street", ESPACO);// modelo
-    strncpy(nomes[3], "Borracha", ESPACO); // tipo_roda
-    int arr[] =  {1200, 110, 10}; // preco ; comprimento ; diam_roda
-    PreencheEntrada(&skate,ARR_TIPOS,arr,nomes);
-    }
 }

@@ -60,22 +60,42 @@ void leManual(struct Manual* coisa,FILE* f)
         break;
   }
 }
+
+int pegaIndice(int ID,FILE* f){
+  int indice;
+  fseek(f,(long int) 2*sizeof(int)*(ID-1)+4,SEEK_SET); //2 vezes pares de int vezes ID-1 p/ achar o indice(ID nao mutavel e crescente, indice mutavel)
+  fread(&indice, sizeof(int), 1, f);
+}
+int pegaUltimoIndice(FILE* f){
+  fseek(f, 0,SEEK_SET); //comeca no inicio, vai ate o indice no inicio
+  long int offset=0;
+  int ID;
+  
+  while(fread(&ID,sizeof(int),1,f) && offset<=INDICE_INICIO){ //fread retorna 1 se ler algum int, 0 se nao
+    offset+=4;
+    fseek(f,4,SEEK_CUR); //pula de ler o indice, em relacao a posicao relativa do leitor
+  }
+  return ID;
+}
 void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f,int ultimo) 
 {
   //Lê a região do arquivo referente ao ID informado pela estrutura
   //Assume todas entradas de tamanho igual(144), FILE* em modo rb+ ou wb+ 
-  //Esse metodo de calculo impede de tentar truncar strings com menos de 25 chars
+  //Esse metodo de calculo impede de tentar truncar strings com menos de 28 chars
   //Em troca, acesso de entradas fica em O(1) em vez de O(n)
   //ultimo e usado para acessar 
+
+  int indice=pegaIndice(id,f);
   if (ultimo){
     fseek(f,(long int) -sizeof(ENTRADA_FINAL),SEEK_END); //Posiciona cursor no inicio da ultima entrada
   }
   else{
-    fseek(f, (long int) sizeof(ENTRADA_FINAL)*id, SEEK_SET);// Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao ID
+    fseek(f, (long int) INDICE_INICIO+sizeof(ENTRADA_FINAL)*indice, SEEK_SET);// Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao indice
   }
   
 
   fread(&(teste->ID), sizeof(int), 1, f);
+  fread(&(teste->indice), sizeof(int), 1, f);
   fread(&(teste->APAGADO), sizeof(int), 1, f);
   fread(&(teste->classe), sizeof(int), 1, f);
   fread(teste->nome, sizeof(char), ESPACO, f);
