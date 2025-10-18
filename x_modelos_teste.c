@@ -131,7 +131,7 @@ int main ()
                 int id;
                 printf("Qual id voce quer remover do arquivo?");
                 scanf("%d",&id);
-                int indice=pegaIndice(id)
+                int indice=pegaIndice(id,arquivo)
                 RemoverRegistro(indice,arquivo); //estou abusando do fato que isso tambem consegue deletar
                 break;
 
