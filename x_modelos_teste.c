@@ -2,9 +2,10 @@
 #include "C:\\LP1\\concessionaria\\repositorio\\include\\escrita_arq.h"
 #include "C:\\LP1\\concessionaria\\repositorio\\include\\ler_arq.h"
 #include "C:\\LP1\\concessionaria\\repositorio\\include\\escrita_arq.h"
-#include "C:\LP1\concessionaria\repositorio\include\remover_registro.h"
+#include "C:\\LP1\\concessionaria\\repositorio\\include\\remover_registro.h"
+#include "C:\\LP1\\concessionaria\\repositorio\\include\\editar_registro.h"
 
-void CriarRegistro(arquivo){
+void CriarRegistro(FILE* arquivo){
     puts("Entre 0 p moto, 1 p carro, 2 p barco, 3 p helicoptero, 4 p bike, 5 p skate ? ");
     int entrada_USER;
     scanf("%d", &entrada_USER);
@@ -13,64 +14,64 @@ void CriarRegistro(arquivo){
     int indice=IndiceMax(arquivo)+1; //pega o maior indice do arquivo, e adiciona +1
     ENTRADA_FINAL moto;
     int ARR_TIPOS[] = {ID,indice,0, 0, 0}; // ID ; indice; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
+    char nomes[4][ESPACO];
     strncpy(nomes[0], "Motinha", ESPACO); // nome
     strncpy(nomes[1], "Preta", ESPACO); // cor
     strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
     strncpy(nomes[3], "Couro", ESPACO); // guidom
-    int arr[] =  {8500, 1, {8, 12}}; // preco ; offroad ; pressao_ideal[2]
+    int arr[] =  {8500, 1, 8, 12}; // preco ; offroad ; pressao_ideal[2]
     PreencheEntrada(&moto,ARR_TIPOS,arr,nomes);
     ExibeEntrada(moto); //mostra a entrada a ser escrita
 
     ENTRADA_FINAL carro;
-    int ARR_TIPOS[] = {ID, indice,0, motorizado_ENUM, carro_ENUM}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[3][ESPACO];
-    strncpy(nomes[0], "Carrinho", ESPACO); // nome
-    strncpy(nomes[1], "Cinza", ESPACO); // cor
-    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
-    int arr[] =  {18500, 4, 4, 1, {8, 8, 12, 12}}; // preco ; tracao ; portas ; eletrico ; pressao_ideal[4]
-    PreencheEntrada(&carro,ARR_TIPOS,arr,nomes);
+    int ARR_TIPOS_1[] = {ID, indice,0, motorizado_ENUM, carro_ENUM}; // ID ; APAGADO ; classe ; subclasse 
+    char nomes_1[3][ESPACO];
+    strncpy(nomes_1[0], "Carrinho", ESPACO); // nome
+    strncpy(nomes_1[1], "Cinza", ESPACO); // cor
+    strncpy(nomes_1[2], "Gasolina", ESPACO); // combustivel
+    int arr_1[] =  {18500, 4, 4, 1, 8, 8, 12, 12}; // preco ; tracao ; portas ; eletrico ; pressao_ideal[4]
+    PreencheEntrada(&carro,ARR_TIPOS_1,arr_1,nomes);
     ExibeEntrada(carro);
 
     ENTRADA_FINAL barco;
-    int ARR_TIPOS[] = {ID, indice,0, 0, 2}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
-    strncpy(nomes[0], "Barquinho", ESPACO); // nome
-    strncpy(nomes[1], "Branco", ESPACO); // cor
-    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
-    strncpy(nomes[3], "Amadeirado", ESPACO); // tipo_casco
-    int arr[] =  {958500, 250, 320}; // preco ; litragem ; vel_aq_max
-    PreencheEntrada(&barco,ARR_TIPOS,arr,nomes);
+    int ARR_TIPOS_2[] = {ID, indice,0, 0, 2}; // ID ; APAGADO ; classe ; subclasse 
+    char nomes_2[4][ESPACO];
+    strncpy(nomes_2[0], "Barquinho", ESPACO); // nome
+    strncpy(nomes_2[1], "Branco", ESPACO); // cor
+    strncpy(nomes_2[2], "Gasolina", ESPACO); // combustivel
+    strncpy(nomes_2[3], "Amadeirado", ESPACO); // tipo_casco
+    int arr_2[] =  {958500, 250, 320}; // preco ; litragem ; vel_aq_max
+    PreencheEntrada(&barco,ARR_TIPOS_2,arr_2,nomes);
     
     ENTRADA_FINAL helicoptero;
-    int ARR_TIPOS[] = {ID, indice,0, 0, 3}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
-    strncpy(nomes[0], "Helicopterozinho", ESPACO); // nome
-    strncpy(nomes[1], "Preto", ESPACO); // cor
-    strncpy(nomes[2], "Gasolina", ESPACO); // combustivel
-    int arr[] =  {1518500, 6, 6, 6000}; // preco ; pas ; passageiros ; altitude_max
-    PreencheEntrada(&helicoptero,ARR_TIPOS,arr,nomes);
+    int ARR_TIPOS_3[] = {ID, indice,0, 0, 3}; // ID ; APAGADO ; classe ; subclasse 
+    char nomes_3[4][ESPACO];
+    strncpy(nomes_3[0], "Helicopterozinho", ESPACO); // nome
+    strncpy(nomes_3[1], "Preto", ESPACO); // cor
+    strncpy(nomes_3[2], "Gasolina", ESPACO); // combustivel
+    int arr_3[] =  {1518500, 6, 6, 6000}; // preco ; pas ; passageiros ; altitude_max
+    PreencheEntrada(&helicoptero,ARR_TIPOS_3,arr_3,nomes);
 
     ENTRADA_FINAL bike;
-    int ARR_TIPOS[] = {ID,indice, 0, 1, 0}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
-    strncpy(nomes[0], "Bikezinha", ESPACO); // nome
-    strncpy(nomes[1], "Vermelha", ESPACO); // cor
-    strncpy(nomes[2], "Vintage", ESPACO); // modelo
-    strncpy(nomes[3], "Alta", ESPACO); // suspensao
-    int arr[] =  {1200, 50, 6};  // preco ; diam_roda ; marchas
-    PreencheEntrada(&bike,ARR_TIPOS,arr,nomes);
+    int ARR_TIPOS_4[] = {ID,indice, 0, 1, 0}; // ID ; APAGADO ; classe ; subclasse 
+    char nomes_4[4][ESPACO];
+    strncpy(nomes_4[0], "Bikezinha", ESPACO); // nome
+    strncpy(nomes_4[1], "Vermelha", ESPACO); // cor
+    strncpy(nomes_4[2], "Vintage", ESPACO); // modelo
+    strncpy(nomes_4[3], "Alta", ESPACO); // suspensao
+    int arr_4[] =  {1200, 50, 6};  // preco ; diam_roda ; marchas
+    PreencheEntrada(&bike,ARR_TIPOS_4,arr_4,nomes);
 
 
     ENTRADA_FINAL skate;
-    int ARR_TIPOS[] = {ID, indice, 0, 1, 1}; // ID ; APAGADO ; classe ; subclasse 
-    int nomes[4][ESPACO];
-    strncpy(nomes[0], "Skatezinho", ESPACO); // nome
-    strncpy(nomes[1], "Preto", ESPACO); // cor
-    strncpy(nomes[2], "Street", ESPACO);// modelo
-    strncpy(nomes[3], "Borracha", ESPACO); // tipo_roda
-    int arr[] =  {1200, 110, 10}; // preco ; comprimento ; diam_roda
-    PreencheEntrada(&skate,ARR_TIPOS,arr,nomes);
+    int ARR_TIPOS_5[] = {ID, indice, 0, 1, 1}; // ID ; APAGADO ; classe ; subclasse 
+    char nomes_5[4][ESPACO];
+    strncpy(nomes_5[0], "Skatezinho", ESPACO); // nome
+    strncpy(nomes_5[1], "Preto", ESPACO); // cor
+    strncpy(nomes_5[2], "Street", ESPACO);// modelo
+    strncpy(nomes_5[3], "Borracha", ESPACO); // tipo_roda
+    int arr_5[] =  {1200, 110, 10}; // preco ; comprimento ; diam_roda
+    PreencheEntrada(&skate,ARR_TIPOS_5,arr_5,nomes);
     
     switch (entrada_USER){
         case 0:
@@ -109,18 +110,17 @@ int main ()
         puts("Digite o número da opção escolhida: ");
         int escolha;
         scanf("%d", &escolha);
-
+        int id;
         switch (escolha)
         {
             case(1):
                 CriarRegistro(arquivo); //IDs sao crescentes, entao tem que ir ate o final do arquivo, pegar ultima e adicionar uma com ID+1
                 break;
             case(2): //teste de busca de arquivos
-                int id;
                 printf("Qual id voce quer procurar no arquivo?");
                 scanf("%d",&id);
                 ENTRADA_FINAL amostra;
-                leEntrada(&amostra,id,arquivo);
+                LeEntrada(&amostra,id,arquivo);
                 ExibeEntrada(amostra);
                 break;
             case(3):
@@ -128,7 +128,6 @@ int main ()
                 break;
             
             case(4):
-                int id;
                 printf("Qual id voce quer remover do arquivo?");
                 scanf("%d",&id);
                 int indice=pegaIndice(id,arquivo);
