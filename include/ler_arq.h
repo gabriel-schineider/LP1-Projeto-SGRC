@@ -61,17 +61,54 @@ void leManual(struct Manual* coisa,FILE* f)
   }
 }
 
-int pegaIndice(int ID,FILE* f){
+int pegaIndice(int ID,FILE* f){\
+  //dado um ID, pega o indice correspondente
+  //O(1) pois indices estao arranjados de forma crescente e sempre igual
   int indice;
   fseek(f,(long int) 2*sizeof(int)*(ID-1)+4,SEEK_SET); //2 vezes pares de int vezes ID-1 p/ achar o indice(ID nao mutavel e crescente, indice mutavel)
   fread(&indice, sizeof(int), 1, f);
+}
+
+
+int IndiceMax(FILE* f){
+  //pega o indice maximo do arquivo. Nao passa de 99(indices vao de 0 a 99 para 100 elementos totais)
+  int max=0;
+  fseek(f,4,SEEK_SET);
+  int offset=0; //o quanto andamos na leitura
+  int novo;
+  while(offset<INDICE_INICIO){
+    offset+=8;
+    fread(&novo,sizeof(int),1,f); //ler indice atual 
+    if (novo>max){
+      max=novo;
+    }
+    fseek(f,4,SEEK_CUR); //pula o ID, so queremos ler o indice agora. Eh parecido com pegar UltimoID
+  }
+}
+
+int indice_P_ID(FILE* f, int indice){
+  //dado um indice, retorna seu ID respectivo
+  fseek(f, 0,SEEK_SET); //comeca no inicio, vai ate o indice no inicio
+  long int offset=0;
+  int ID;
+  int indiceIterante; //usado para verificar se achamos o indice desejado
+  while(offset<INDICE_INICIO){ 
+    fread(&ID,sizeof(int),1,f); //ler ID primeiro porque ta escrito nessa ordem
+    fread(&indiceIterante,sizeof(int),1,f);//pula de ler o indice, em relacao a posicao relativa do leitor
+    offset+=8;
+    if (indiceIterante==indice){ //achamos o indice, retornamos seu ID correspondente
+      break;
+    }
+    //nao preciso de nenhum fseek, os dois freads ja percorrem o intervalo da forma que eu quero
+  }
+  return ID;
 }
 int pegarUltimoID(FILE* f){
   fseek(f, 0,SEEK_SET); //comeca no inicio, vai ate o indice no inicio
   long int offset=0;
   int ID;
   fread(&ID,sizeof(int),1,f);
-  while( ID!=-1 && offset<=INDICE_INICIO){ 
+  while( ID!=-1 && offset<INDICE_INICIO){ 
     offset+=8; 
     fseek(f,4,SEEK_CUR); //pula de ler o indice, em relacao a posicao relativa do leitor
     fread(&ID,sizeof(int),1,f); 
@@ -85,6 +122,7 @@ int pegarUltimoID(FILE* f){
   }
   return ID;
 }
+
 void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f) 
 {
   //Lê a região do arquivo referente ao ID informado pela estrutura
@@ -93,24 +131,31 @@ void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f)
   //Em troca, acesso de entradas fica em O(1) em vez de O(n)
 
   int indice=pegaIndice(id,f);
-  fseek(f, (long int) INDICE_INICIO+sizeof(ENTRADA_FINAL)*indice, SEEK_SET);// Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao indice
-
-  
-
-  fread(&(teste->ID), sizeof(int), 1, f);
-  fread(&(teste->indice), sizeof(int), 1, f);
-  fread(&(teste->APAGADO), sizeof(int), 1, f);
-  fread(&(teste->classe), sizeof(int), 1, f);
-  fread(teste->nome, sizeof(char), ESPACO, f);
-  fread(teste->cor, sizeof(char), ESPACO, f);
-  fread(&(teste->preco), sizeof(int), 1, f);
-  if (teste->classe)
-  {
-    leManual(&(teste->manual),f);
+  if (indice==NULO){
+    teste->ID=id;
+    teste->indice=indice;
+    teste->APAGADO=sim;
   }
-  else
-  {
-    leMotorizado(&(teste->motorizado),f);
+  else{
+    fseek(f, (long int) INDICE_INICIO+sizeof(ENTRADA_FINAL)*indice, SEEK_SET);// Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao indice
+
+    
+
+    fread(&(teste->ID), sizeof(int), 1, f);
+    fread(&(teste->indice), sizeof(int), 1, f);
+    fread(&(teste->APAGADO), sizeof(int), 1, f);
+    fread(&(teste->classe), sizeof(int), 1, f);
+    fread(teste->nome, sizeof(char), ESPACO, f);
+    fread(teste->cor, sizeof(char), ESPACO, f);
+    fread(&(teste->preco), sizeof(int), 1, f);
+    if (teste->classe)
+    {
+      leManual(&(teste->manual),f);
+    }
+    else
+    {
+      leMotorizado(&(teste->motorizado),f);
+    }
   }
 }
 

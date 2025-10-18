@@ -53,8 +53,11 @@ void EscreverEntrada(ENTRADA_FINAL teste, FILE* f){
     //Assume todas entradas de tamanho igual(144), FILE* em modo rb+ ou wb+ 
     //Esse metodo de calculo impede de tentar truncar strings com menos de 25 chars
     //Em troca, acesso de entradas fica  em O(1) em vez de O(n)
+    fseek(f,(long int) (teste.ID-1)*8,SEEK_SET); //atualizar tabela de IDs e indices 
+    fwrite(&teste.ID,sizeof(int),1,f);
+    fwrite(&teste.indice,sizeof(int),1,f);
 
-    fseek(f,(long int) INDICE_INICIO+sizeof(ENTRADA_FINAL)*teste.indice,SEEK_SET); 
+    fseek(f,(long int) INDICE_INICIO+sizeof(ENTRADA_FINAL)*teste.indice,SEEK_SET);  //escrever arquivo na posicao correta
     fwrite(&teste.ID,sizeof(int),1,f);
     fwrite(&teste.indice,sizeof(int),1,f);
     fwrite(&teste.APAGADO,sizeof(int),1,f);

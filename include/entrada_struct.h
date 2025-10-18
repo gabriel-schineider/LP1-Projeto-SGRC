@@ -5,6 +5,7 @@
 
 #define ESPACO 28 // definindo aqui para generalizar e facilitar manutenção (caso precisemos alterar o espaço, mudamos apenas uma vez aqui e não em cada local, o que poderia estar sujeito a falhas)
 #define INDICE_INICIO 800 //no maximo 100 entradas--> 100 pares de 2 ints no indice no inicio do arquivo, cada um com 4 bytes.
+#define NULO -1 //referente a indices apagados
 enum Entidade{ motorizado_ENUM, manual_ENUM }; //0 e 1 respect.
 
 enum tipo_Motorizado{  moto_ENUM, carro_ENUM, barco_ENUM, helicoptero_ENUM }; //0,1,2,3 respect.
