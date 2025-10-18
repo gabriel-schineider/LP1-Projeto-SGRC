@@ -192,5 +192,43 @@ void EditarRegistro(FILE* arquivo){
     ExibeEntrada(modificado);
 }
 
+void CriaRegistroUSER(FILE* arquivo){
+    int ID=pegarUltimoID(arquivo)+1; //pega o ultimo ID do arquivo, e adiciona um a mais para criar um novo registro
+    int indice=IndiceMax(arquivo)+1; //pega o maior indice do arquivo, e adiciona +1
+    ENTRADA_FINAL novo;
+    novo.ID=ID;
+    novo.indice=indice;
+    int classe;
+    printf("Voce quer que a nova entrada seja motorizada ou manual?\n"); //reparando que isso ta repetido no Editar, da pra inventar uma sub funcao aqui
+    printf("0 p motorizado, 1 manual\n"); //economizaria algumas linhas, mas por legibilidade vou deixar assim por enquanto
+    scanf("%d",&classe);
+    novo.classe=classe;
+
+    char nome[ESPACO];
+    printf("Escreva o nome do produto, max de caracteres 27\n");
+    scanf("%s",nome);
+    strncpy(novo.nome,nome,ESPACO);
+
+    char cor[ESPACO];
+    printf("Escreva a cor do produto, max de caracteres 27\n");
+    scanf("%s",cor);
+    strncpy(novo.cor,cor,ESPACO);
+
+    int preco;
+    printf("Digite o preco do produto\n");
+    scanf("%d",&preco);
+    novo.preco=preco;
+
+    if(classe==0){
+        preencheUserMotor(&(novo.motorizado));
+    }
+    if (classe==1){
+        preencheUserManual(&(novo.manual));
+    }
+    EscreverEntrada(novo,arquivo);
+    printf("Entrada modificada:\n");
+    ExibeEntrada(novo);
+}
+
 
 #endif

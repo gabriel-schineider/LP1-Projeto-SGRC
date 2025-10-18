@@ -5,13 +5,14 @@
 
 int main (void)
 {
-  struct ENTRADA_FINAL registros[100];
-
+  int sair=0;
+  FILE* arquivo=fopen("C:\\LP1\\concessionaria\\repositorio\\testes.bin","rb+");
   puts("Seja bem-vindo(a) ao XXXXX_nome-do-nosso-sistema_XXXXX, o Sistema de Gerenciamento de Registros para Concesionárias !");
-
-  exibeOpcoes(); // encontra-se em "fluxo.c"
+  while(!sair){
+    USER_INPUT(arquivo,&sair); //pega input do usuario, sair indica fim de atividade
+  }
 
   puts("Programa finalizado.");
-
+  fclose(arquivo);
   return 0;
 }
