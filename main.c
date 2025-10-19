@@ -7,7 +7,7 @@ int main (void)
 {
   int sair=0;
   FILE* arquivo=fopen("dados.bin","rb+");
-  inicializa(arquivo);
+  arquivo=inicializa(arquivo);
   puts("Seja bem-vindo(a) ao XXXXX_nome-do-nosso-sistema_XXXXX, o Sistema de Gerenciamento de Registros para Concesionárias !");
   while(!sair){
     USER_INPUT(arquivo,&sair); //pega input do usuario, sair indica fim de atividade

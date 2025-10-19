@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\escrita_arq.h"
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\ler_arq.h"
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\escrita_arq.h"
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\remover_registro.h"
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\editar_cria_registro.h"
+#include "escrita_arq.h"
+#include "ler_arq.h"
+#include "escrita_arq.h"
+#include "remover_registro.h"
+#include "editar_cria_registro.h"
+
 #ifndef FUNCOES_USUARIOS_H
 #define FUNCOES_USUARIOS_H
 

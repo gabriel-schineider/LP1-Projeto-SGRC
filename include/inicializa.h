@@ -6,7 +6,7 @@
 FILE* inicializa(FILE* arquivo) {
     if (arquivo == NULL) {
         //se nao existe, 
-        arquivo = fopen("testes.bin", "wb+");
+        arquivo = fopen("dados.bin", "wb+");
         if (arquivo == NULL) {
             perror("Erro ao criar o arquivo");
         }

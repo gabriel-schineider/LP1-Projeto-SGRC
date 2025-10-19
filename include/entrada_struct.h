@@ -146,15 +146,15 @@ void exibeMotorizado(Motorizado coisa){
             break;
         case carro_ENUM: //exibir carro
             printf("A tracao desse carro eh %d x %d \n",coisa.carro.tracao, coisa.carro.tracao);
-            printf("Numero de portas%d \n",coisa.carro.portas);
-            if (coisa.moto.offroad){
+            printf("Numero de portas %d \n",coisa.carro.portas);
+            if (coisa.carro.eletrico){
                 printf("Essa carro eh eletrico\n");
             }
             else{
                 printf("Essa moto nao eh eletrico\n");
             }
             for (int i=0;i<4;i++){
-                printf("Pressao ideal do pneu %d: %d PSI", i,coisa.carro.pressao_ideal[i]);
+                printf("Pressao ideal do pneu %d : %d PSI\n", i,coisa.carro.pressao_ideal[i]);
             }
             break;
         case barco_ENUM:
@@ -169,6 +169,7 @@ void exibeMotorizado(Motorizado coisa){
     }
 }
 void exibeManual(Manual coisa){
+    
     switch (coisa.tipo){
         case bike_ENUM: 
             printf("Suspensao : %s \n",coisa.bike.suspensao);

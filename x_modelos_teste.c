@@ -107,7 +107,7 @@ void CriarRegistro(FILE* arquivo){
 int main ()
 {
     ENTRADA_FINAL registros_teste[6];
-    FILE* arquivo=fopen("C:\\LP1\\concessionaria\\repositorio\\testes.bin","rb+");
+    FILE* arquivo=fopen("testes.bin","rb+");
     arquivo=inicializa(arquivo);
     // vou criar um loop para add cada registro à uma posição
 

@@ -9,7 +9,7 @@ void preencheUserMotor(struct Motorizado* ptr){
     int tipo;
     printf("Digite 0 para moto, 1 para carro, 2 para barco, 3 para helicoptero\n");
     scanf("%d",&tipo);
-
+    ptr->tipo=tipo;
     char combustivel[ESPACO];
     printf("Escreva aqui o tipo de combustivel, num max de caracteres 27\n");
     scanf("%s",combustivel);
@@ -89,7 +89,8 @@ void preencheUserManual(struct Manual* ptr){
     int tipo;
     printf("Digite 0 para bike, 1 para skate\n");
     scanf("%d",&tipo);
-
+    ptr->tipo=tipo;
+    
     char modelo[ESPACO];
     printf("Escreva aqui o modelo, num max de caracteres 27\n");
     scanf("%s",modelo);
@@ -193,8 +194,8 @@ void EditarRegistro(FILE* arquivo){
 }
 
 void CriaRegistroUSER(FILE* arquivo){
-    int ID=pegarUltimoID(arquivo); //pega o ultimo ID do arquivo, e adiciona um a mais para criar um novo registro
-    int indice=IndiceMax(arquivo); //pega o maior indice do arquivo, e adiciona +1
+    int ID=pegarUltimoID(arquivo)+1; //pega o ultimo ID do arquivo, e adiciona um a mais para criar um novo registro
+    int indice=IndiceMax(arquivo)+1; //pega o maior indice do arquivo, e adiciona +1
     ENTRADA_FINAL novo;
     novo.ID=ID;
     novo.indice=indice;
