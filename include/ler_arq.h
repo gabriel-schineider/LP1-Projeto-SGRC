@@ -13,7 +13,7 @@ void leMotorizado(struct Motorizado* coisa,FILE* f)
   switch (coisa->tipo)
   {
     case moto_ENUM: 
-        fread(&(coisa->moto.guidom), sizeof(char), ESPACO,f);
+        fread(coisa->moto.guidom, sizeof(char), ESPACO,f);
         fread(&(coisa->moto.offroad), sizeof(int), 1, f);
         fread(&(coisa->moto.pressao_ideal), sizeof(int), 2, f);
         break;
@@ -61,12 +61,13 @@ void leManual(struct Manual* coisa,FILE* f)
   }
 }
 
-int pegaIndice(int ID,FILE* f){\
+int pegaIndice(int ID,FILE* f){
   //dado um ID, pega o indice correspondente
   //O(1) pois indices estao arranjados de forma crescente e sempre igual
   int indice;
   fseek(f,(long int) 2*sizeof(int)*(ID-1)+4,SEEK_SET); //2 vezes pares de int vezes ID-1 p/ achar o indice(ID nao mutavel e crescente, indice mutavel)
   fread(&indice, sizeof(int), 1, f);
+  return indice;
 }
 
 
@@ -84,43 +85,42 @@ int IndiceMax(FILE* f){
     }
     fseek(f,4,SEEK_CUR); //pula o ID, so queremos ler o indice agora. Eh parecido com pegar UltimoID
   }
+  return max;
 }
 
 int indice_P_ID(FILE* f, int indice){
   //dado um indice, retorna seu ID respectivo
   fseek(f, 0,SEEK_SET); //comeca no inicio, vai ate o indice no inicio
   long int offset=0;
-  int ID;
+  int ID=-1;
   int indiceIterante; //usado para verificar se achamos o indice desejado
   while(offset<INDICE_INICIO){ 
     fread(&ID,sizeof(int),1,f); //ler ID primeiro porque ta escrito nessa ordem
     fread(&indiceIterante,sizeof(int),1,f);//pula de ler o indice, em relacao a posicao relativa do leitor
     offset+=8;
     if (indiceIterante==indice){ //achamos o indice, retornamos seu ID correspondente
-      break;
+      return ID;
     }
     //nao preciso de nenhum fseek, os dois freads ja percorrem o intervalo da forma que eu quero
   }
-  return ID;
+  return -1;
+
 }
 int pegarUltimoID(FILE* f){
   fseek(f, 0,SEEK_SET); //comeca no inicio, vai ate o indice no inicio
   long int offset=0;
   int ID;
-  fread(&ID,sizeof(int),1,f);
-  while( ID!=-1 && offset<INDICE_INICIO){ 
-    offset+=8; 
-    fseek(f,4,SEEK_CUR); //pula de ler o indice, em relacao a posicao relativa do leitor
+  int indice;
+  int ultID=1;
+  while(offset<INDICE_INICIO){ 
     fread(&ID,sizeof(int),1,f); 
+    fread(&indice,sizeof(int),1,f);
+    offset+=8;
+    if (indice!=NULO){  //Inicialmente, todos os indices vao ser NULO, queremos o ID ultimo que esteja NULO
+      ultID=ID;
+    }
   }
-  if (ID==-1){ //quando chegar no primeiro ID negativo, ler o ID anterior
-    fseek(f,-8,SEEK_CUR); //offset negativo para dar no ID antigo 
-    fread(&ID,sizeof(int),1,f);
-  }
-  else{ //se passou de tamanho do indice de valores, pegar ID maximo
-    ID==100;
-  }
-  return ID;
+  return ultID;
 }
 
 void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f) 
@@ -162,11 +162,11 @@ void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f)
 
 void BuscarRegistro(FILE* f)
 {
-  // Assume-se a já existência do registro, cuja posição no arquivo encontra-se em (long int)sizeof(ENTRADA_FINAL) * id
+  // Assume-se a já existência do registro, cuja posição no arquivo encontra-se em (long int) INDICE_INICIO+sizeof(ENTRADA_FINAL)*indice
   ENTRADA_FINAL registro; // Variável nova que receberá a cópia das informações do registro já existente
-  long int id; // ID desse registro já existente
+  int id; // ID desse registro já existente
   puts("Informe o ID do registro que deseja buscar: ");
-  scanf("%d", id);
+  scanf("%d", &id);
 
   LeEntrada(&registro, id, f);
   ExibeEntrada(registro);

@@ -7,7 +7,7 @@
 #define EDITAR_REGISTRO_H
 void preencheUserMotor(struct Motorizado* ptr){
     int tipo;
-    printf("Digite 0 para moto, 1 para carro, 2 para barco, 3 para barco\n");
+    printf("Digite 0 para moto, 1 para carro, 2 para barco, 3 para helicoptero\n");
     scanf("%d",&tipo);
 
     char combustivel[ESPACO];
@@ -198,6 +198,7 @@ void CriaRegistroUSER(FILE* arquivo){
     ENTRADA_FINAL novo;
     novo.ID=ID;
     novo.indice=indice;
+    novo.APAGADO=nao;
     int classe;
     printf("Voce quer que a nova entrada seja motorizada ou manual?\n"); //reparando que isso ta repetido no Editar, da pra inventar uma sub funcao aqui
     printf("0 p motorizado, 1 manual\n"); //economizaria algumas linhas, mas por legibilidade vou deixar assim por enquanto

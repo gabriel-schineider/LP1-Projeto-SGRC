@@ -19,11 +19,7 @@ void USER_INPUT(FILE* arquivo, int* termino){
             CriaRegistroUSER(arquivo); //IDs sao crescentes, entao tem que ir ate o final do arquivo, pegar ultima e adicionar uma com ID+1
             break;
         case(2): //teste de busca de arquivos
-            printf("Qual id voce quer procurar no arquivo?");
-            scanf("%d",&id);
-            ENTRADA_FINAL amostra;
-            LeEntrada(&amostra,id,arquivo);
-            ExibeEntrada(amostra);
+            BuscarRegistro(arquivo);
             break;
         case(3):
             EditarRegistro(arquivo); //editar um dado registro, definido em outro modulo 

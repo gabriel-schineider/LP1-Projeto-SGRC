@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\escrita_arq.h"
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\ler_arq.h"
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\escrita_arq.h"
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\remover_registro.h"
-#include "C:\\LP1\\concessionaria\\repositorio\\include\\editar_registro.h"
+#include "include/escrita_arq.h"
+#include "include/ler_arq.h"
+#include "include/escrita_arq.h"
+#include "include/remover_registro.h"
+#include "include/editar_cria_registro.h"
 
 void CriarRegistro(FILE* arquivo){
     puts("Entre 0 p moto, 1 p carro, 2 p barco, 3 p helicoptero, 4 p bike, 5 p skate ? ");
