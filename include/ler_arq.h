@@ -107,21 +107,35 @@ int indice_P_ID(FILE* f, int indice){
 
 }
 int pegarUltimoID(FILE* f){
-  fseek(f, 0,SEEK_SET); //comeca no inicio, vai ate o indice no inicio
-  long int offset=0;
-  int ID;
-  int indice;
-  int ultID=1;
-  while(offset<INDICE_INICIO){ 
-    fread(&ID,sizeof(int),1,f); 
-    fread(&indice,sizeof(int),1,f);
-    offset+=8;
-    if (indice!=NULO){  //Inicialmente, todos os indices vao ser NULO, queremos o ID ultimo que esteja NULO
-      ultID=ID;
+    if (f == NULL) {
+      return 1;
     }
-  }
-  return ultID;
+    fseek(f, 0, SEEK_SET);
+
+    int ID = 1;
+    int indice = 0;
+    int ultID = 1;
+
+    long int offset = 0;
+
+    while (offset < INDICE_INICIO) {
+        size_t l1 = fread(&ID, sizeof(int), 1, f);
+        size_t l2 = fread(&indice, sizeof(int), 1, f);
+
+        // Se fread falhar (EOF antes de 800 bytes), para o loop
+        if (l1 != 1 || l2 != 1){
+            break;
+        }
+
+
+        if (indice != NULO)
+            ultID = ID;
+
+        offset = ftell(f); // atualiza a posição real no arquivo
+    }
+    return ultID;
 }
+
 
 void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f) 
 {
@@ -170,6 +184,7 @@ void BuscarRegistro(FILE* f)
 
   LeEntrada(&registro, id, f);
   ExibeEntrada(registro);
+  fflush(f);
 }
 
 #endif

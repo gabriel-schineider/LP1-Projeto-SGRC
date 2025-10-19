@@ -62,7 +62,7 @@ void EscreverEntrada(ENTRADA_FINAL teste, FILE* f){
     fwrite(&teste.indice,sizeof(int),1,f);
     fwrite(&teste.APAGADO,sizeof(int),1,f);
     fwrite(&teste.classe,sizeof(int),1,f);
-    fwrite(&teste.nome,sizeof(char),ESPACO,f); //se atentar ao '\0' na hora de ler de volta para um programa em C, isso vai escrever lixo
+    fwrite(teste.nome,sizeof(char),ESPACO,f); //se atentar ao '\0' na hora de ler de volta para um programa em C, isso vai escrever lixo
     fwrite(&teste.cor,sizeof(char),ESPACO,f);
     fwrite(&teste.preco,sizeof(int),1,f);    
     if (teste.classe){
@@ -71,6 +71,7 @@ void EscreverEntrada(ENTRADA_FINAL teste, FILE* f){
     else {
         escreveMotorizado(teste.motorizado,f);
     }
+    fflush(f);
 
 }
 #endif

@@ -193,8 +193,8 @@ void EditarRegistro(FILE* arquivo){
 }
 
 void CriaRegistroUSER(FILE* arquivo){
-    int ID=pegarUltimoID(arquivo)+1; //pega o ultimo ID do arquivo, e adiciona um a mais para criar um novo registro
-    int indice=IndiceMax(arquivo)+1; //pega o maior indice do arquivo, e adiciona +1
+    int ID=pegarUltimoID(arquivo); //pega o ultimo ID do arquivo, e adiciona um a mais para criar um novo registro
+    int indice=IndiceMax(arquivo); //pega o maior indice do arquivo, e adiciona +1
     ENTRADA_FINAL novo;
     novo.ID=ID;
     novo.indice=indice;

@@ -4,6 +4,7 @@
 #include "include/escrita_arq.h"
 #include "include/remover_registro.h"
 #include "include/editar_cria_registro.h"
+#include "include/mestre.h"
 
 void CriarRegistro(FILE* arquivo){
     puts("Entre 0 p moto, 1 p carro, 2 p barco, 3 p helicoptero, 4 p bike, 5 p skate ? ");
@@ -13,7 +14,7 @@ void CriarRegistro(FILE* arquivo){
     int ID=pegarUltimoID(arquivo)+1; //pega o ultimo ID do arquivo, e adiciona um a mais para criar um novo registro
     int indice=IndiceMax(arquivo)+1; //pega o maior indice do arquivo, e adiciona +1
     ENTRADA_FINAL moto;
-    int ARR_TIPOS[] = {ID,indice,0, 0, 0}; // ID ; indice; APAGADO ; classe ; subclasse 
+    int ARR_TIPOS[] = {ID,indice,nao, motorizado_ENUM,moto_ENUM }; // ID ; indice; APAGADO ; classe ; subclasse 
     char nomes[4][ESPACO];
     strncpy(nomes[0], "Motinha", ESPACO); // nome
     strncpy(nomes[1], "Preta", ESPACO); // cor
@@ -23,7 +24,7 @@ void CriarRegistro(FILE* arquivo){
     PreencheEntrada(&moto,ARR_TIPOS,arr,nomes);
 
     ENTRADA_FINAL carro;
-    int ARR_TIPOS_1[] = {ID, indice,0, motorizado_ENUM, carro_ENUM}; // ID ; APAGADO ; classe ; subclasse 
+    int ARR_TIPOS_1[] = {ID, indice,0, motorizado_ENUM, carro_ENUM}; // ID ; indice; APAGADO ; classe ; subclasse 
     char nomes_1[3][ESPACO];
     strncpy(nomes_1[0], "Carrinho", ESPACO); // nome
     strncpy(nomes_1[1], "Cinza", ESPACO); // cor
@@ -32,7 +33,7 @@ void CriarRegistro(FILE* arquivo){
     PreencheEntrada(&carro,ARR_TIPOS_1,arr_1,nomes_1);
 
     ENTRADA_FINAL barco;
-    int ARR_TIPOS_2[] = {ID, indice,0, 0, 2}; // ID ; APAGADO ; classe ; subclasse 
+    int ARR_TIPOS_2[] = {ID, indice,nao, motorizado_ENUM, barco_ENUM}; // ID ; indice; APAGADO ; classe ; subclasse 
     char nomes_2[4][ESPACO];
     strncpy(nomes_2[0], "Barquinho", ESPACO); // nome
     strncpy(nomes_2[1], "Branco", ESPACO); // cor
@@ -42,7 +43,7 @@ void CriarRegistro(FILE* arquivo){
     PreencheEntrada(&barco,ARR_TIPOS_2,arr_2,nomes_2);
     
     ENTRADA_FINAL helicoptero;
-    int ARR_TIPOS_3[] = {ID, indice,0, 0, 3}; // ID ; APAGADO ; classe ; subclasse 
+    int ARR_TIPOS_3[] = {ID, indice,0, 0, 3}; // ID ;indice; APAGADO ; classe ; subclasse 
     char nomes_3[4][ESPACO];
     strncpy(nomes_3[0], "Helicopterozinho", ESPACO); // nome
     strncpy(nomes_3[1], "Preto", ESPACO); // cor
@@ -51,7 +52,7 @@ void CriarRegistro(FILE* arquivo){
     PreencheEntrada(&helicoptero,ARR_TIPOS_3,arr_3,nomes_3);
 
     ENTRADA_FINAL bike;
-    int ARR_TIPOS_4[] = {ID,indice, 0, 1, 0}; // ID ; APAGADO ; classe ; subclasse 
+    int ARR_TIPOS_4[] = {ID,indice, nao, manual_ENUM, bike_ENUM}; // ID ; indice; APAGADO ; classe ; subclasse 
     char nomes_4[4][ESPACO];
     strncpy(nomes_4[0], "Bikezinha", ESPACO); // nome
     strncpy(nomes_4[1], "Vermelha", ESPACO); // cor
@@ -62,7 +63,7 @@ void CriarRegistro(FILE* arquivo){
 
 
     ENTRADA_FINAL skate;
-    int ARR_TIPOS_5[] = {ID, indice, 0, 1, 1}; // ID ; APAGADO ; classe ; subclasse 
+    int ARR_TIPOS_5[] = {ID, indice, nao, manual_ENUM, skate_ENUM}; // ID ; APAGADO ; classe ; subclasse 
     char nomes_5[4][ESPACO];
     strncpy(nomes_5[0], "Skatezinho", ESPACO); // nome
     strncpy(nomes_5[1], "Preto", ESPACO); // cor
@@ -85,12 +86,16 @@ void CriarRegistro(FILE* arquivo){
             ExibeEntrada(barco);
             break;
         case 3:
-            EscreverEntrada(bike,arquivo);
-            ExibeEntrada(moto);
+            EscreverEntrada(helicoptero,arquivo);
+            ExibeEntrada(helicoptero);
             break;
         case 4:
+            EscreverEntrada(bike,arquivo);
+            ExibeEntrada(bike);
+            break;
+        case 5:
             EscreverEntrada(skate,arquivo);
-            ExibeEntrada(moto);
+            ExibeEntrada(skate);
             break;
         default:
             printf("Deu errado(provavelmente input errado)\n");
@@ -103,7 +108,7 @@ int main ()
 {
     ENTRADA_FINAL registros_teste[6];
     FILE* arquivo=fopen("C:\\LP1\\concessionaria\\repositorio\\testes.bin","rb+");
-
+    arquivo=inicializa(arquivo);
     // vou criar um loop para add cada registro à uma posição
 
     //Loop infinito de acao, tirado diretamente do fluxo, so que com funcoes em sua forma bruta
@@ -134,7 +139,7 @@ int main ()
                 printf("Qual id voce quer remover do arquivo?");
                 scanf("%d",&id);
                 int indice=pegaIndice(id,arquivo);
-                RemoverRegistro(indice,arquivo); //estou abusando do fato que isso tambem consegue deletar
+                RemoverRegistro(indice,arquivo);
                 break;
 
             case(5):

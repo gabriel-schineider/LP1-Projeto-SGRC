@@ -6,16 +6,18 @@
 FILE* inicializa(FILE* arquivo) {
     if (arquivo == NULL) {
         //se nao existe, 
-        arquivo = fopen("dados.bin", "wb+");
+        arquivo = fopen("testes.bin", "wb+");
         if (arquivo == NULL) {
             perror("Erro ao criar o arquivo");
         }
+        printf("Arquivo inicializado com 100 IDs e indices -1 (total 800 bytes).\n");
     }
     int primeiro_indice;
     fseek(arquivo,4,SEEK_SET);
     fread(&primeiro_indice,sizeof(int),1,arquivo);
 
     if(primeiro_indice!=-1){
+        fseek(arquivo,0,SEEK_SET);
         for (int i = 0; i < 100; i++) {
             int ID=i;
             int indice = -1;
@@ -36,7 +38,6 @@ FILE* inicializa(FILE* arquivo) {
     fflush(arquivo);
 
 
-    printf("Arquivo inicializado com 100 IDs e indices -1 (total 800 bytes).\n");
     return arquivo;
 }
 

@@ -10,7 +10,7 @@ void RemoverRegistro(int indice, FILE *f) //só muda o campo APAGADO pra 1, não
     int removido = 1;
     
     long int PosicaoDoRegistro = INDICE_INICIO+sizeof(ENTRADA_FINAL) * indice;
-    long int PosicaoParaRemover = (PosicaoDoRegistro + sizeof(int)); //pula o ID
+    long int PosicaoParaRemover = (PosicaoDoRegistro + 2*sizeof(int)); //pula o ID
 
     fseek(f,PosicaoParaRemover, SEEK_SET);
     fwrite(&removido, sizeof(int), 1, f);
