@@ -114,7 +114,7 @@ int pegarUltimoID(FILE* f){
 
     int ID = 1;
     int indice = 0;
-    int ultID = 1;
+    int ultID = 0;
 
     long int offset = 0;
 
