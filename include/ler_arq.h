@@ -65,7 +65,13 @@ int pegaIndice(int ID,FILE* f){
   //dado um ID, pega o indice correspondente
   //O(1) pois indices estao arranjados de forma crescente e sempre igual
   int indice;
-  fseek(f,(long int) 2*sizeof(int)*(ID-1)+4,SEEK_SET); //2 vezes pares de int vezes ID-1 p/ achar o indice(ID nao mutavel e crescente, indice mutavel)
+  long int offset = 8 * (ID - 1) + 4; // índice vem 4 bytes depois do ID
+
+  if (fseek(f, offset, SEEK_SET) != 0) {
+      perror("Erro ao posicionar cursor em pegaIndice");
+      return NULO;
+    }
+  //fseek(f,(long int) 2*sizeof(int)*(ID-1),SEEK_SET); //2 vezes pares de int vezes ID-1 p/ achar o indice(ID nao mutavel e crescente, indice mutavel)
   fread(&indice, sizeof(int), 1, f);
   return indice;
 }
@@ -124,7 +130,8 @@ int pegarUltimoID(FILE* f){
 
         // Se fread falhar (EOF antes de 800 bytes), para o loop
         if (l1 != 1 || l2 != 1){
-            break;
+          printf("Deu final de arquivo\n");
+          break;
         }
 
 
@@ -151,8 +158,9 @@ void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f)
     teste->APAGADO=sim;
   }
   else{
+    printf("[DEBUG] ID=%d, indice=%d, ftell antes=%ld\n", id,indice, ftell(f));
     fseek(f, (long int) INDICE_INICIO+sizeof(ENTRADA_FINAL)*indice, SEEK_SET);// Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao indice
-
+    printf("[DEBUG] ID=%d, indice=%d, ftell depois=%ld\n", id, indice, ftell(f));
     
 
     fread(&(teste->ID), sizeof(int), 1, f);
