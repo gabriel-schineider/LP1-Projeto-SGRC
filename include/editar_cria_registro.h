@@ -17,7 +17,7 @@ void preencheUserMotor(struct Motorizado* ptr){
 
     int numero; //sera usado para preencher parametros numericos
     switch (tipo){
-        case moto_ENUM:
+        case moto_ENUM: {
             char guidom[ESPACO];
             printf("Escreva aqui o tipo de guidom da moto, max de caracteres 27\n");
             scanf("%s",guidom);
@@ -34,7 +34,8 @@ void preencheUserMotor(struct Motorizado* ptr){
             }
 
             break;
-        case carro_ENUM:
+        }
+        case carro_ENUM:{
             printf("Qual e a tracao(x por x, digite um numero)\n");
             scanf("%d",&numero);
             ptr->carro.tracao=numero;
@@ -53,7 +54,8 @@ void preencheUserMotor(struct Motorizado* ptr){
                 ptr->carro.pressao_ideal[i]=numero;
             }
             break;
-        case barco_ENUM:
+        }
+        case barco_ENUM:{
 
             printf("Qual e a litragem do barco(volume)\n");
             scanf("%d",&numero);
@@ -69,7 +71,8 @@ void preencheUserMotor(struct Motorizado* ptr){
             ptr->barco.vel_aq_max=numero;
 
             break;
-        case helicoptero_ENUM:
+        }
+        case helicoptero_ENUM:{
             printf("Numero de pas do helicoptero\n");
             scanf("%d",&numero);
             ptr->helicoptero.pas=numero;
@@ -83,7 +86,9 @@ void preencheUserMotor(struct Motorizado* ptr){
             ptr->helicoptero.altitude_max=numero;
 
             break;
+        }
     }
+    printf("\n");
 }
 void preencheUserManual(struct Manual* ptr){
     int tipo;
@@ -97,7 +102,7 @@ void preencheUserManual(struct Manual* ptr){
     strncpy(ptr->modelo,modelo,ESPACO);
     int numero; //usado para preencher parametros numericos
     switch (tipo){
-        case bike_ENUM:
+        case bike_ENUM:{
             char suspensao[ESPACO];
             printf("Escreva tipo de suspensao da bike, max de caracteres 27\n");
             scanf("%s",suspensao);
@@ -112,7 +117,8 @@ void preencheUserManual(struct Manual* ptr){
             scanf("%d",&numero);
             ptr->bike.marchas=numero;
             break;
-        case skate_ENUM:
+        }
+        case skate_ENUM:{
             printf("Comprimento do skate, em cm\n");
             scanf("%d",&numero);
             ptr->skate.comprimento=numero;
@@ -127,6 +133,7 @@ void preencheUserManual(struct Manual* ptr){
             strncpy(ptr->skate.tipo_roda,tipo_roda,ESPACO);
 
             break;
+        }
     }
 }
 void ModificarEntrada(ENTRADA_FINAL* coisa){
