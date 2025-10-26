@@ -158,9 +158,7 @@ void LeEntrada(ENTRADA_FINAL* teste,int id, FILE* f)
     teste->APAGADO=sim;
   }
   else{
-    printf("[DEBUG] ID=%d, indice=%d, ftell antes=%ld\n", id,indice, ftell(f));
     fseek(f, (long int) INDICE_INICIO+sizeof(ENTRADA_FINAL)*indice, SEEK_SET);// Posiciona o cursor do arquivo, a partir da posição inicial, na struct referente ao indice
-    printf("[DEBUG] ID=%d, indice=%d, ftell depois=%ld\n", id, indice, ftell(f));
     
 
     fread(&(teste->ID), sizeof(int), 1, f);
