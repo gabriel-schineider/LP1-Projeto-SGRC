@@ -1,4 +1,4 @@
-#include "C:\LP1\concessionaria\repositorio\include\entrada_struct.h"
+#include "entrada_struct.h"
 #include <stdio.h>
 #ifndef LER_ARQ_H
 #define LER_ARQ_H
