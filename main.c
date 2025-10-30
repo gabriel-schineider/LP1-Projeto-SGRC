@@ -1,19 +1,18 @@
-# include <stdio.h> // Tomar cuidado para não incluí-lo várias vezes ao adicionar os módulos dos outros arquivos neste arquivo principal
-#include "include/mestre.h" // Faz-se necessário atualizar o caminho corretamente desse header
 
-// CRIANDO APENAS O ESQUELETO DO MAIN
+// Para usar o sistema, tenha todos os arquivos no mesmo diretório e compile-os pelo terminal assim: "gcc main.c funcoes.c"
+// Depois de já compilado, apenas digite: "a.out" sempre que quiser usar o sistema
+
+#include "funcoes.h"
 
 int main (void)
 {
-  int sair=0;
-  FILE* arquivo=fopen("dados.bin","rb+");
-  arquivo=inicializa(arquivo);
-  puts("Seja bem-vindo(a) ao XXXXX_nome-do-nosso-sistema_XXXXX, o Sistema de Gerenciamento de Registros para Concesionárias !");
-  while(!sair){
-    USER_INPUT(arquivo,&sair); //pega input do usuario, sair indica fim de atividade
-  }
+  puts("Boas vindas ao Sistema de Gerenciamento de Registros da sua Concessionária!");
 
-  puts("Programa finalizado.");
-  fclose(arquivo);
+  puts(""); // Apenas para fins de estética no terminal
+
+  Opcoes();
+
+  puts("Programa finalizado com sucesso!");
+  
   return 0;
 }
