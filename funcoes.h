@@ -94,14 +94,9 @@ void criaRegistro (Registro * registro, int * ultimoID);
 
 // Funções de Busca de Registro no Arquivo
 
-long buscaRegistro (Registro * registro, int ID_Busca, int paraRemocao);
+long buscaRegistro (Registro * registro, int ID_Busca);
 
 void Busca (Registro * registro);
-
-
-// Funções de Alteração de Registro no Arquivo (edição ou remoção)
-
-void alteraRegistro (Registro * registro, int opcao);
 
 
 

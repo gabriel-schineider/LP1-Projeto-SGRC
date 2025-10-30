@@ -404,7 +404,6 @@ void preencheRegistro (Registro * registro)
   // assume-se que o usuário vai colocar o tipo certo, dentro das opções apresentadas
   // o ID é atribuído automaticamente ao registro
 
-
   printf("Informe o tipo de veículo que desejas registrar:\n [0] Moto\n [1] Carro\n [2] Caminhão\n [3] Helicóptero\n [4] Barco\nDigite o número correspondente: ");
   scanf(" %d", (int*)&registro->Tipo); // Usando esse cast para que o compilador trate esse enum type como int, pois é assim que está sendo usado no programa
   getchar(); // Consome o "\n" do buffer para o uso do fgets()
@@ -454,7 +453,7 @@ void preencheCampoTipo (Registro * registro, int subCampoTipo)
         break;
 
       case (transmissao):
-        preencheFreio(&registro->moto);
+        preencheTransmissao(&registro->moto);
         break;
     }
     break;
@@ -577,7 +576,7 @@ void preencheCampoComum (Registro * registro, int campo)
 
     case (revisoes):
       int subcampoRevisao; // Valores de 1 a 10
-      printf("Informe qual revisão desejas editar: ");
+      printf("\nInforme qual revisão desejas editar: ");
       scanf(" %d", &subcampoRevisao);
       getchar();
       printf("\nInforme o novo valor do campo\n");
@@ -718,33 +717,26 @@ void exibeRevisoes (Registro registro)
 
 void exibeRegistro (Registro registro)
 {
-  if (registro.Ativo == 0) // Caso o registro ainda não tenha sido criado ou fora apagado
-  {
-    puts("Esse registro não consta na base de dados.");
-    return;
-  }
-  else // Caso o registro exista na base de dados
-  {
-    printf("\nInformações do Registro de ID-%d\n\n", registro.ID);
-    
-    exibeNomeTipo(registro);
+  // Assume-se que o registro existe e está ativo
+  printf("\nInformações do Registro de ID-%d\n", registro.ID);
+  
+  exibeNomeTipo(registro);
 
-    printf(" Marca: %s\n", registro.Marca);
+  printf(" Marca: %s\n", registro.Marca);
 
-    printf(" Modelo: %s\n", registro.Modelo);
+  printf(" Modelo: %s\n", registro.Modelo);
 
-    printf(" Ano de fabricação: %d\n", registro.AnoFabricacao);
+  printf(" Ano de fabricação: %d\n", registro.AnoFabricacao);
 
-    printf(" Cor: %s\n", registro.Cor);
+  printf(" Cor: %s\n", registro.Cor);
 
-    printf(" Preço: %.2f\n", registro.Preco);
-    
-    exibeTipo(registro);
+  printf(" Preço: %.2f\n", registro.Preco);
+  
+  exibeTipo(registro);
 
-    exibeRevisoes(registro);
+  exibeRevisoes(registro);
 
-    printf(" Observações: %s\n", registro.Obs);
-  }
+  printf(" Observações: %s\n", registro.Obs);
 }
 
 
@@ -919,18 +911,17 @@ void criaRegistro (Registro * registro, int * ultimoID)
 
 // Busca de Registro no Arquivo
 
-long buscaRegistro (Registro * registro, int ID_Busca, int paraRemocao)
+long buscaRegistro (Registro * registro, int ID_Busca)
 {
   // Assume-se que o usuário já informou o ID do registro antes de entrar nessa função
 
   // variável paraRemocao serve para não exibir o registro caso seja com o intuito de removê-lo
   
-  // Retorna o ponteiro do cursor do arquivo para a posição do registro encontrado caso ele exista e esteja ativo ou -1 caso não exista ou não esteja mais ativo
-  // Preenche a variável registro passada para função com o registro obtido pela busca ou sai da função com uma mensagem de erro
+  // Retorna o ponteiro do cursor do arquivo para a posição do registro encontrado caso ele exista e esteja ativo ou -1 caso não exista ou não esteja mais ativo && Preenche a variável registro passada para função com o registro obtido pela busca (estando ativa ou não) ou sai da função com uma mensagem de erro
 
-  // Fazendo dessa maneira para utilizá-la tanto na própria busca de registro quanto na edição de registro
+  // Fazendo dessa maneira para utilizá-la tanto na própria busca de registro quanto na edição ou remoção de registro
   
-  long posicaoInicialRegistro = -1; // Variável que vai ser retornada pela função, pois representa a posição inicial do arquivo encontrado ou NULL
+  long posicaoRegistro = -1; // Variável que vai ser retornada pela função, pois representa a posição inicial do arquivo encontrado ou NULL
 
   registro->ID = -1; // "Garantindo" que não ocorra nenhum mal entendido entre os IDs que o usuário passou e o que está gravado na variável passada para função
 
@@ -939,11 +930,8 @@ long buscaRegistro (Registro * registro, int ID_Busca, int paraRemocao)
   if (f == NULL) // Verificando se o arquivo pode ser aberto. Caso não possa, sai da função.
   {
     perror("Erro ao abrir o arquivo de registros.");
-
-    return posicaoInicialRegistro; // Retornando -1
+    return posicaoRegistro; // Retornando -1
   }
-
-  rewind(f); // Garantindo que nenhuma flag esteja ativa e que o cursor esteja no início
   
   int encontrado = 0; // Para saber se o registro foi encontrado
   while (fread(registro, sizeof(Registro), 1, f) == 1) // Enquanto não há erros de leituras (fread() != 0), procura um registro que tenha ID igual ao que foi passado pelo usuário
@@ -958,7 +946,8 @@ long buscaRegistro (Registro * registro, int ID_Busca, int paraRemocao)
   {
     if (registro->Ativo == 0)
     {
-      printf("Esse registro não está mais ativo na base de dados.\n");
+      printf("\nEsse registro não está mais ativo na base de dados.\n");
+      return posicaoRegistro;
     }
     else
     {
@@ -966,21 +955,17 @@ long buscaRegistro (Registro * registro, int ID_Busca, int paraRemocao)
       {
         // Cursor do arquivo encontra-se na última posição do registro obtido pela busca
         fseek(f, -sizeof(Registro), SEEK_CUR); // Voltando para a posição inicial desse registro 
-        posicaoInicialRegistro = ftell(f); // Atribuindo essa posição para a variável que será retornada
-        if (paraRemocao != 1)
-        {
-          exibeRegistro(*registro); // Exibindo o arquivo apenas caso essa busca tenha sido feita com o intuito de busca ou edição
-        }
+        posicaoRegistro = ftell(f); // Atribuindo essa posição para a variável que será retornada
       }
     }
   }
   else // Caso tenha ido até o final sem êxito
   {
-    puts("Esse registro não consta na base de dados.");
+    printf("\nEsse registro não consta na base de dados.\n");
   }
 
   fclose(f);
-  return posicaoInicialRegistro; // Retorna a posição correta apenas se o registro for encontrado e estiver ativo, Caso contrário retorna -1 Se não tenha sido possível abrir o arquivo OU Se o registro não existir na base de dados OU Se o registro não estiver mais ativo na base de dados
+  return posicaoRegistro; // Retorna a posição correta apenas se o registro for encontrado e estiver ativo, Caso contrário retorna -1 Se não tenha sido possível abrir o arquivo OU Se o registro não existir na base de dados OU Se o registro não estiver mais ativo na base de dados
 }
 
 void Busca (Registro * registro)
@@ -989,112 +974,14 @@ void Busca (Registro * registro)
   printf("Informe o ID do registro que desejas acessar: ");
   scanf(" %d", &ID_Busca);
 
-  buscaRegistro(registro, ID_Busca, 0);
-}
-
-
-
-// Alteração de Registro no Arquivo (edição ou remoção)
-
-void alteraRegistro (Registro * registro, int opcao)
-{
-  // opcao = {0:"edição" ; 1:"remoção"}
-  // edita ou remove o registro do arquivo, a depender da escolha do usuário
-
-  int ID_Altera;
-  if (opcao == 0) // Edição
+  long posicaoRegistro = buscaRegistro(registro, ID_Busca);
+  
+  if (posicaoRegistro == -1)
   {
-    printf("Informe o ID do registro que desejas editar: ");
+    return;
   }
-  else
-  {
-    if (opcao == 1) // Remoção
-    {
-      printf("Informe o ID do registro que desejas remover: ");
-    }
-  }
-  scanf(" %d", &ID_Altera);
-
-  long posicaoRegistro = buscaRegistro(registro, ID_Altera, opcao);
-  if (posicaoRegistro == -1) // Caso não tenha sido possível abrir o arquivo OU Caso o registro não exista na base de dados OU Caso o registro não esteja mais ativo na base de dados
-  {
-    return; // Saindo da função para evitar erros
-  }
-
-  puts(""); // Apenas para fins de estética no terminal
-
-  // Alterando o campo desejado
-  if (registro->Ativo == 1) // Pela função buscaRegistro, se esse registro consta na base de dados e está ativo, essa variável registro já é o ponteiro para a estrutura que o usuário deseja editar // Garantindo que esse registro está ativo
-  {
-    if (opcao == 0) // Edição
-    {
-      int campo;
-      printf("Qual campo desejas alterar?\n");
-
-      exibeCampos();
-      
-      printf("Informe com o número correspondente: ");
-      scanf(" %d", &campo);
-      getchar();
-
-      puts("");
-      
-      if (campo != subcampo)
-      {
-        preencheCampoComum(registro, campo); 
-      }
-      if (campo == subcampo)
-      {
-        int subCampoTipo;
-        printf("Qual campo desejas alterar?\n");
-
-        exibeCamposTipo(registro);
-
-        printf("Informe com o número correspondente: ");
-        scanf(" %d", &subCampoTipo);
-        getchar();
-
-        preencheCampoTipo(registro, subCampoTipo);
-      }
-    }
-    else
-    {
-      if (opcao == 1) // Remoção
-      {
-        registro->Ativo = 0; // Desativando o registro da base de dados
-      }
-    }
-  }
- 
-  puts(""); // Apenas para fins estéticos no terminal
-
-
-  // Reescrita do novo e atual registro nesse mesmo lugar dele
-
-  FILE* f = fopen(ARQUIVO, "rb+"); // Abre o arquivo em modo binário de leitura para leitura e escrita
-
-  // Como a função busca já foi utilizada, podemos garantir que o arquivo existe. Se não existisse, a função já teria sido retornada
-
-  rewind(f); // Garante que não há nenhuma flag ativa
-
-  fseek(f, posicaoRegistro, SEEK_SET); // Posiciona para a posição inicial do registro, agora já editado
-
-  fwrite(registro, sizeof(Registro), 1, f);
-
-  fclose(f);
-
-
-  if (opcao == 0) // Edição
-  {
-   puts("Edição de arquivo realizada com sucesso!");
-  }
-  else
-  {
-    if (opcao == 1) // Remoção
-    {
-       puts("Remoção de arquivo realizada com sucesso!");
-    }
-  }
+  
+  exibeRegistro(*registro);
 }
 
 
@@ -1103,7 +990,67 @@ void alteraRegistro (Registro * registro, int opcao)
 
 void editaRegistro (Registro * registro)
 {
-  alteraRegistro(registro, 0);
+  // Assume-se que o usuário sabe o ID do registro que pretende editar
+
+  int ID_Busca;
+  printf("Informe o ID do registro que desejas editar: ");
+  scanf(" %d", &ID_Busca);
+
+  int posicaoRegistro = buscaRegistro(registro, ID_Busca);
+
+  if (posicaoRegistro == -1)
+  {
+    return; // A função busca já informou a não ocorrência desse registro, então é só sair dessa função
+  }
+
+  // Caso chegue nessa parte, podemos garantir que o registro existe e está ativo
+  exibeRegistro(*registro); // A função busca já preencheu a variável registro com o registro certo 
+
+  int campo;
+  printf("\nQual campo desejas alterar?\n");
+
+  exibeCampos();
+  
+  printf("Informe com o número correspondente: ");
+  scanf(" %d", &campo);
+  getchar();
+
+  if (campo != subcampo)
+  {
+    preencheCampoComum(registro, campo); 
+  }
+  else
+  {
+    if (campo == subcampo)
+    {
+      int subCampoTipo;
+      printf("\nQual campo desejas alterar?\n");
+
+      exibeCamposTipo(registro);
+
+      printf("Informe com o número correspondente: ");
+      scanf(" %d", &subCampoTipo);
+      getchar();
+
+      preencheCampoTipo(registro, subCampoTipo);
+    }
+  }
+
+  FILE* f = fopen(ARQUIVO, "rb+"); // Abre o arquivo em modo binário de leitura para leitura e escrita
+
+  // Como a função busca já foi utilizada, podemos garantir que o arquivo existe. Se não existisse, a função já teria sido retornada
+
+  fseek(f, posicaoRegistro, SEEK_SET); // Posiciona para a posição inicial do registro, agora já editado
+
+  fwrite(registro, sizeof(Registro), 1, f);
+
+  fclose(f);
+
+
+  if (campo != nenhum)
+  {
+    printf("\nEdição de registro realizada com sucesso!\n");
+  }
 }
 
 
@@ -1112,7 +1059,34 @@ void editaRegistro (Registro * registro)
 
 void removeRegistro (Registro * registro)
 {
-  alteraRegistro(registro, 1);
+  // Assume-se que o usuário sabe o ID do registro que pretende remover
+
+  int ID_Busca;
+  printf("Informe o ID do registro que desejas remover: ");
+  scanf(" %d", &ID_Busca);
+
+  int posicaoRegistro = buscaRegistro(registro, ID_Busca);
+
+  if (posicaoRegistro == -1)
+  {
+    return; // A função busca já informou a não ocorrência desse registro, então é só sair dessa função
+  }
+
+  // Caso chegue nessa parte, podemos garantir que o registro existe e está ativo
+  registro->Ativo = 0;
+
+  FILE* f = fopen(ARQUIVO, "rb+"); // Abre o arquivo em modo binário de leitura para leitura e escrita
+
+  // Como a função busca já foi utilizada, podemos garantir que o arquivo existe. Se não existisse, a função já teria sido retornada
+
+  fseek(f, posicaoRegistro, SEEK_SET); // Posiciona para a posição inicial do registro, agora já removido (registro->Ativo == 0)
+
+  fwrite(registro, sizeof(Registro), 1, f);
+
+  fclose(f);
+
+
+  printf("\nRemoção de registro realizada com sucesso!\n");
 }
 
 
@@ -1165,6 +1139,7 @@ void exibeOpcoes (Registro * registro, int * ultimoID)
 
     printf("Qual ação desejas realizar?\n [%d] Criação de Registro\n [%d] Busca de Registro\n [%d] Edição de Registro\n [%d] Remoção de Registro\n [%d] Sair\nInforme com o número correspondente: ", criacao, busca, edicao, remocao, sair);
     scanf(" %d", &acao);
+    puts("");
   }
 
   limpaTerminal(); // Limpando o terminal antes de finalizar o programa para que apenas a mensagem de despedida apareça.
