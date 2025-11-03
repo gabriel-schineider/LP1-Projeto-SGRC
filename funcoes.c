@@ -864,7 +864,7 @@ void verifica_UltimoID (int * ultimoID) // Função necessária para receber o �
     else // Se realmente existem registros nele
     {
       Registro ultimoRegistro; // Usando uma variável para evitar que aconteça segmentation fault ao usar fread
-      fseek(f, -sizeof(Registro), SEEK_END);
+      fseek(f, (long int) -sizeof(Registro), SEEK_END);
       fread(&ultimoRegistro, sizeof(Registro), 1, f);
       *ultimoID = ultimoRegistro.ID;
     }
@@ -917,7 +917,8 @@ long buscaRegistro (Registro * registro, int ID_Busca)
 
   // variável paraRemocao serve para não exibir o registro caso seja com o intuito de removê-lo
   
-  // Retorna o ponteiro do cursor do arquivo para a posição do registro encontrado caso ele exista e esteja ativo ou -1 caso não exista ou não esteja mais ativo && Preenche a variável registro passada para função com o registro obtido pela busca (estando ativa ou não) ou sai da função com uma mensagem de erro
+  // Retorna o ponteiro do cursor do arquivo para a posição do registro encontrado caso ele exista e esteja ativo ou -1 caso não exista ou não esteja mais ativo
+  // && Preenche a variável registro passada para função com o registro obtido pela busca (estando ativa ou não) ou sai da função com uma mensagem de erro
 
   // Fazendo dessa maneira para utilizá-la tanto na própria busca de registro quanto na edição ou remoção de registro
   
@@ -954,7 +955,7 @@ long buscaRegistro (Registro * registro, int ID_Busca)
       if (registro->Ativo == 1)
       {
         // Cursor do arquivo encontra-se na última posição do registro obtido pela busca
-        fseek(f, -sizeof(Registro), SEEK_CUR); // Voltando para a posição inicial desse registro 
+        fseek(f, (long int) -sizeof(Registro), SEEK_CUR); // Voltando para a posição inicial desse registro 
         posicaoRegistro = ftell(f); // Atribuindo essa posição para a variável que será retornada
       }
     }
