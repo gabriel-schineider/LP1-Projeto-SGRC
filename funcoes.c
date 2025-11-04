@@ -875,9 +875,9 @@ void verifica_UltimoID (int * ultimoID) // Função necessária para receber o �
 
 void criaRegistro (Registro * registro, int * ultimoID)
 {
-  FILE* f = fopen(ARQUIVO, "ab+"); // Abrindo o arquivo em modo binário append para leitura e escrita
+  FILE* f = fopen(ARQUIVO, "ab+"); // Abrindo o arquivo em modo binário appen
   
-  if (f == NULL) // Verificando se o arquivo pode ser aberto. Caso não possa, sai da função.
+  if (f == NULL) // Verificando se o arquivo pode ser aberto.
   {
     perror("Erro ao abrir o arquivo de registros.");
     return;
@@ -894,16 +894,12 @@ void criaRegistro (Registro * registro, int * ultimoID)
     *ultimoID += 1;
     registro->ID = *ultimoID;
   }
-
   // Atribuindo um valor para Ativo
   registro->Ativo = 1;
-
   // Atribuindo valores para os demais campos do registro
-  preencheRegistro(registro); // Usuário preenche, normalmente, todos os outros campos do registro
-  
+  preencheRegistro(registro); // Usuário preenche, normalmente, outros campos
   fwrite(registro, sizeof(Registro), 1, f); // Escreve (com append) esse registro para o arquivo
   fclose(f); // Fecha o arquivo para garantir que o buffer registro tenha sido gravado
-
   printf("\nRegistro criado com sucesso! O ID desse registro é: %d\n", registro->ID);
 }
 
@@ -914,26 +910,18 @@ void criaRegistro (Registro * registro, int * ultimoID)
 long buscaRegistro (Registro * registro, int ID_Busca)
 {
   // Assume-se que o usuário já informou o ID do registro antes de entrar nessa função
-
   // variável paraRemocao serve para não exibir o registro caso seja com o intuito de removê-lo
-  
   // Retorna o ponteiro do cursor do arquivo para a posição do registro encontrado caso ele exista e esteja ativo ou -1 caso não exista ou não esteja mais ativo
   // && Preenche a variável registro passada para função com o registro obtido pela busca (estando ativa ou não) ou sai da função com uma mensagem de erro
-
   // Fazendo dessa maneira para utilizá-la tanto na própria busca de registro quanto na edição ou remoção de registro
-  
   long posicaoRegistro = -1; // Variável que vai ser retornada pela função, pois representa a posição inicial do arquivo encontrado ou NULL
-
   registro->ID = -1; // "Garantindo" que não ocorra nenhum mal entendido entre os IDs que o usuário passou e o que está gravado na variável passada para função
-
   FILE* f = fopen(ARQUIVO, "rb"); // Abrindo o arquivo em modo binário de leitura apenas para leitura
-
   if (f == NULL) // Verificando se o arquivo pode ser aberto. Caso não possa, sai da função.
   {
     perror("Erro ao abrir o arquivo de registros.");
     return posicaoRegistro; // Retornando -1
   }
-  
   int encontrado = 0; // Para saber se o registro foi encontrado
   while (fread(registro, sizeof(Registro), 1, f) == 1) // Enquanto não há erros de leituras (fread() != 0), procura um registro que tenha ID igual ao que foi passado pelo usuário
   {
@@ -992,30 +980,22 @@ void Busca (Registro * registro)
 void editaRegistro (Registro * registro)
 {
   // Assume-se que o usuário sabe o ID do registro que pretende editar
-
   int ID_Busca;
   printf("Informe o ID do registro que desejas editar: ");
   scanf(" %d", &ID_Busca);
-
   int posicaoRegistro = buscaRegistro(registro, ID_Busca);
-
   if (posicaoRegistro == -1)
   {
     return; // A função busca já informou a não ocorrência desse registro, então é só sair dessa função
   }
-
   // Caso chegue nessa parte, podemos garantir que o registro existe e está ativo
   exibeRegistro(*registro); // A função busca já preencheu a variável registro com o registro certo 
-
   int campo;
   printf("\nQual campo desejas alterar?\n");
-
   exibeCampos();
-  
   printf("Informe com o número correspondente: ");
   scanf(" %d", &campo);
   getchar();
-
   if (campo != subcampo)
   {
     preencheCampoComum(registro, campo); 
@@ -1026,28 +1006,18 @@ void editaRegistro (Registro * registro)
     {
       int subCampoTipo;
       printf("\nQual campo desejas alterar?\n");
-
       exibeCamposTipo(registro);
-
       printf("Informe com o número correspondente: ");
       scanf(" %d", &subCampoTipo);
       getchar();
-
       preencheCampoTipo(registro, subCampoTipo);
     }
   }
-
   FILE* f = fopen(ARQUIVO, "rb+"); // Abre o arquivo em modo binário de leitura para leitura e escrita
-
   // Como a função busca já foi utilizada, podemos garantir que o arquivo existe. Se não existisse, a função já teria sido retornada
-
   fseek(f, posicaoRegistro, SEEK_SET); // Posiciona para a posição inicial do registro, agora já editado
-
   fwrite(registro, sizeof(Registro), 1, f);
-
   fclose(f);
-
-
   if (campo != nenhum)
   {
     printf("\nEdição de registro realizada com sucesso!\n");
