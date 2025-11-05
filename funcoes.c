@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include "busca.h"
 
 
 // Preenchimento de Registro pelo Terminal
@@ -875,7 +875,7 @@ void verifica_UltimoID (int * ultimoID) // Função necessária para receber o �
 
 void criaRegistro (Registro * registro, int * ultimoID)
 {
-  FILE* f = fopen(ARQUIVO, "ab+"); // Abrindo o arquivo em modo binário appen
+  FILE* f = fopen(ARQUIVO, "ab+"); // Abrindo o arquivo em modo binário append
   
   if (f == NULL) // Verificando se o arquivo pode ser aberto.
   {
@@ -905,73 +905,7 @@ void criaRegistro (Registro * registro, int * ultimoID)
 
 
 
-// Busca de Registro no Arquivo
 
-long buscaRegistro (Registro * registro, int ID_Busca)
-{
-  // Assume-se que o usuário já informou o ID do registro antes de entrar nessa função
-  // variável paraRemocao serve para não exibir o registro caso seja com o intuito de removê-lo
-  // Retorna o ponteiro do cursor do arquivo para a posição do registro encontrado caso ele exista e esteja ativo ou -1 caso não exista ou não esteja mais ativo
-  // && Preenche a variável registro passada para função com o registro obtido pela busca (estando ativa ou não) ou sai da função com uma mensagem de erro
-  // Fazendo dessa maneira para utilizá-la tanto na própria busca de registro quanto na edição ou remoção de registro
-  long posicaoRegistro = -1; // Variável que vai ser retornada pela função, pois representa a posição inicial do arquivo encontrado ou NULL
-  registro->ID = -1; // "Garantindo" que não ocorra nenhum mal entendido entre os IDs que o usuário passou e o que está gravado na variável passada para função
-  FILE* f = fopen(ARQUIVO, "rb"); // Abrindo o arquivo em modo binário de leitura apenas para leitura
-  if (f == NULL) // Verificando se o arquivo pode ser aberto. Caso não possa, sai da função.
-  {
-    perror("Erro ao abrir o arquivo de registros.");
-    return posicaoRegistro; // Retornando -1
-  }
-  int encontrado = 0; // Para saber se o registro foi encontrado
-  while (fread(registro, sizeof(Registro), 1, f) == 1) // Enquanto não há erros de leituras (fread() != 0), procura um registro que tenha ID igual ao que foi passado pelo usuário
-  {
-    if (registro->ID == ID_Busca)
-    {
-      encontrado = 1;
-      break; // Saindo do loop, visto que encontrou o registro
-    }
-  }
-  if (encontrado)
-  {
-    if (registro->Ativo == 0)
-    {
-      printf("\nEsse registro não está mais ativo na base de dados.\n");
-      return posicaoRegistro;
-    }
-    else
-    {
-      if (registro->Ativo == 1)
-      {
-        // Cursor do arquivo encontra-se na última posição do registro obtido pela busca
-        fseek(f, (long int) -sizeof(Registro), SEEK_CUR); // Voltando para a posição inicial desse registro 
-        posicaoRegistro = ftell(f); // Atribuindo essa posição para a variável que será retornada
-      }
-    }
-  }
-  else // Caso tenha ido até o final sem êxito
-  {
-    printf("\nEsse registro não consta na base de dados.\n");
-  }
-
-  fclose(f);
-  return posicaoRegistro; // Retorna a posição correta apenas se o registro for encontrado e estiver ativo, Caso contrário retorna -1 Se não tenha sido possível abrir o arquivo OU Se o registro não existir na base de dados OU Se o registro não estiver mais ativo na base de dados
-}
-
-void Busca (Registro * registro)
-{
-  int ID_Busca;
-  printf("Informe o ID do registro que desejas acessar: ");
-  scanf(" %d", &ID_Busca);
-
-  long posicaoRegistro = buscaRegistro(registro, ID_Busca);
-  
-  if (posicaoRegistro == -1)
-  {
-    return;
-  }
-  
-  exibeRegistro(*registro);
-}
 
 
 
