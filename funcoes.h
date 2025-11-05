@@ -87,17 +87,19 @@ void exibeCampos (void);
 
 // Funções de Criação de Registro no Arquivo
 
-void verifica_UltimoID (int * ultimoID);
-void criaRegistro (Registro * registro, int * ultimoID);
-
+int verifica_UltimoID ();
+void criaRegistro (Registro * registro, int* ultimoID);
+int pegarUltimoID(void);
+void inicializa(void);
+int IndiceMax(FILE* f);
 
 
 // Funções de Busca de Registro no Arquivo
 
 long buscaRegistro (Registro * registro, int ID_Busca);
-
 void Busca (Registro * registro);
-
+int indice_P_ID(FILE* f, int indice);
+int pegaIndice(int ID,FILE* f);
 
 
 // Funções de Edição de Registro no Arquivo

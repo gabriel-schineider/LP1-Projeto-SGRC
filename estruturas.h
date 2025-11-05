@@ -3,6 +3,8 @@
 
 #define TAM 32 // Tamanho da maior parte dos tipos textos. Sempre colocando-os com tamanho múltiplo de 4 para evitar incoveniências
 #define ARQUIVO "RegistrosConcessionaria.bin" // Arquivo padrão que será utilizado e gerenciado pelo sistema ao longo da aplicação
+#define INDICE_INICIO 800 //no maximo 100 entradas--> 100 pares de 2 ints no indice no inicio do arquivo, cada um com 4 bytes.
+#define NULO -1 //referente a indices apagados
 
 typedef enum Tipo
 {
@@ -54,7 +56,7 @@ typedef struct Barco
 typedef struct Registro
 {
   int ID; // Para ser utilizado no arquivo
-//  int Indice; // Adicioná-lo futuramente para ser utilizado no arquivo ?
+  int indice; // Adicioná-lo futuramente para ser utilizado no arquivo ?
   int Ativo; // Para saber se está ativo (se Ativo == 1) ou se foi removido (se Ativo == 0)
   Tipo Tipo;
   char Marca[TAM];

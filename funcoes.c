@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "busca.h"
-
+#include "funcoesfinal.h"
 
 // Preenchimento de Registro pelo Terminal
 
@@ -19,8 +19,8 @@
 
 void preencheCilindradas (Moto * moto)
 {
-  // Usada para os seguinte tipo: Moto
-  // Essa função está sendo usada na criação e na edição de registros
+  // Usada para: Moto
+  //  usada na criação e na edição de registros
 
   printf("Número de cilindradas: ");
   scanf(" %d", &moto->Cilindradas);
@@ -29,7 +29,7 @@ void preencheCilindradas (Moto * moto)
 void preencheFreio (Moto * moto)
 {
   // Usada para os seguinte tipo: Moto
-  // Essa função está sendo usada na criação e na edição de registros
+  //  usada na criação e na edição de registros
 
   printf("Tipo de freio: ");
   fgets(moto->Freio, sizeof(moto->Freio), stdin);
@@ -39,14 +39,14 @@ void preencheFreio (Moto * moto)
 void preencheTransmissao (Moto * moto)
 {
   // Usada para os seguinte tipo: Moto
-  // Essa função está sendo usada na criação e na edição de registros
+  //  usada na criação e na edição de registros
 
   printf("Tipo de transmissão: ");
   fgets(moto->Transmissao, sizeof(moto->Transmissao), stdin);
   moto->Transmissao[strcspn(moto->Transmissao, "\n")] = '\0';
 }
 
-  // Preenchimento de Moto
+// Preenchimento de Moto
 
 void preencheMoto (Moto * moto)
 {
@@ -301,7 +301,7 @@ void preencheRevisao (Registro * registro, int i)
   // assume-se 0 <= i <= 9
   printf("%d° revisão: ", i+1);
   fgets(registro->Revisoes[i], sizeof(registro->Revisoes[i]), stdin); // Captura toda o texto inserido pelo usuário (sem fazer split nos espaços)
-  registro->Revisoes[i][strcspn(registro->Revisoes[i], "\n")] = '\0'; // Atribuindo ao último byte capturado pela função fgets() o terminador nulo ao invés da quebra de linha advinda do Enter pressionado pelo usuário ao enviar o texto
+  registro->Revisoes[i][strcspn(registro->Revisoes[i], "\n")] = '\0'; // terminador nulo no último byte  invés da quebra de linha advinda do Enter capturado pela função fgets() 
 }
 
 void preencheRevisoes (Registro * registro)
@@ -324,14 +324,11 @@ void preencheRevisoes (Registro * registro)
 
   if (revisoes)
   {
-
     int i = 0; int continua = 1;
     while ( (i < 10) && (continua) )
     {
       preencheRevisao(registro, i);
-      
       puts("");
-
       i++;
       if (i == 10)
       {
@@ -350,7 +347,6 @@ void preencheRevisoes (Registro * registro)
 void preencheMarca (Registro * registro)
 {
   // Essa função está sendo usada na criação e na edição de registros
-
   printf("Marca: ");
   fgets(registro->Marca, sizeof(registro->Marca), stdin);
   registro->Marca[strcspn(registro->Marca, "\n")] = '\0';
@@ -420,7 +416,6 @@ void preencheRegistro (Registro * registro)
   getchar();
 
   preencheCor(registro);
-
   preenchePreco(registro);
 
   // Como todos os primeiros campos de cada tipo são int, não faz-se necessário o uso do getchar(), visto que não há o uso do fgets() após scanf()
@@ -599,56 +594,43 @@ void preencheCampoComum (Registro * registro, int campo)
 void exibeMoto (Moto moto)
 {
   printf(" Cilindradas: %d\n", moto.Cilindradas);
-
   printf(" Freio: %s\n", moto.Freio);
-
   printf(" Transmissão: %s\n", moto.Transmissao);
 }
 
 void exibeCarro (Carro carro)
 {
   printf(" Portas: %d\n", carro.QntPortas);
-
   printf(" Passageiros: %d\n", carro.Passageiros);
-
   printf(" Câmbio: %s\n", carro.Cambio);
-
   printf(" Tração: %s\n", carro.Tracao);
 }
 
 void exibeCaminhao (Caminhao caminhao)
 {
   printf(" Carga máxima: %d\n", caminhao.CargaMax);
-
   printf(" Eixos: %d\n", caminhao.QntEixos);
-
   printf(" Carroceria: %s\n", caminhao.Carroceria);
 }
 
 void exibeHelicoptero (Helicoptero helicoptero)
 {
   printf(" Rotores: %d\n", helicoptero.QntRotores);
-
   printf(" Autonomia em km: %.2f\n", helicoptero.Autonomia);
-
   printf(" Passageiros: %d\n", helicoptero.Passageiros);
-
   printf(" Peso máximo em kg: %d\n", helicoptero.PesoMax);
 }
 
 void exibeBarco (Barco barco)
 {
   printf(" Comprimento em metros: %d\n", barco.Comprimento);
-
   printf(" Casco: %s\n", barco.Casco);
-
   printf(" Passageiros: %d\n", barco.Passageiros);
-
   printf(" Autonomia em km: %.2f\n", barco.Autonomia);
 }
 
 
-  // Exibição de algum tipo específico
+// Exibição de algum tipo específico
 
 void exibeNomeTipo (Registro registro)
 {
@@ -723,17 +705,12 @@ void exibeRegistro (Registro registro)
   exibeNomeTipo(registro);
 
   printf(" Marca: %s\n", registro.Marca);
-
   printf(" Modelo: %s\n", registro.Modelo);
-
   printf(" Ano de fabricação: %d\n", registro.AnoFabricacao);
-
   printf(" Cor: %s\n", registro.Cor);
-
   printf(" Preço: %.2f\n", registro.Preco);
   
   exibeTipo(registro);
-
   exibeRevisoes(registro);
 
   printf(" Observações: %s\n", registro.Obs);
@@ -835,233 +812,5 @@ void exibeCampos (void)
   printf(" [%d] Revisões\n", revisoes); //Se revisões, perguntar qual revisão
   printf(" [%d] Observações\n", observacoes);
   printf(" [%d] Algum campo específico do tipo de veículo\n", subcampo);
-}
-
-
-
-// Criação de Registro no Arquivo
-
-void verifica_UltimoID (int * ultimoID) // Função necessária para receber o último ID do arquivo
-{
-  FILE* f = fopen(ARQUIVO, "rb");
-  
-  if (f == NULL) // Se não existir o arquivo, ou seja, se não houver registros
-  {
-    *ultimoID = 0;
-    return;
-  }
-  else // Se existir, pode ou estar vazio ou realmente com registros
-  {
-    // Verificando o tamanho do arquivo
-    rewind(f); // Garantindo que nenhuma flag esteja ativa
-    fseek(f, 0, SEEK_END); // Movendo o cursor do arquivo para o final
-    long tamanhoArquivo = ftell(f);
-   
-    if (tamanhoArquivo == 0) // Se existe, mas com tamanho 0
-    {
-      *ultimoID = 0;
-    }
-    else // Se realmente existem registros nele
-    {
-      Registro ultimoRegistro; // Usando uma variável para evitar que aconteça segmentation fault ao usar fread
-      fseek(f, (long int) -sizeof(Registro), SEEK_END);
-      fread(&ultimoRegistro, sizeof(Registro), 1, f);
-      *ultimoID = ultimoRegistro.ID;
-    }
-  
-    fclose(f); // Fechando o arquivo apenas para f != NULL
-  }
-}
-
-void criaRegistro (Registro * registro, int * ultimoID)
-{
-  FILE* f = fopen(ARQUIVO, "ab+"); // Abrindo o arquivo em modo binário append
-  
-  if (f == NULL) // Verificando se o arquivo pode ser aberto.
-  {
-    perror("Erro ao abrir o arquivo de registros.");
-    return;
-  }
-
-  // Atribuindo um valor para o ID
-  if (*ultimoID == 0) // Se ainda não houver registros
-  {
-    registro->ID = 1; // Esse é o primeiro registro
-    *ultimoID = registro->ID; // Recebe o valor do último registro
-  }
-  else // Se esse for o próximo registro
-  {
-    *ultimoID += 1;
-    registro->ID = *ultimoID;
-  }
-  // Atribuindo um valor para Ativo
-  registro->Ativo = 1;
-  // Atribuindo valores para os demais campos do registro
-  preencheRegistro(registro); // Usuário preenche, normalmente, outros campos
-  fwrite(registro, sizeof(Registro), 1, f); // Escreve (com append) esse registro para o arquivo
-  fclose(f); // Fecha o arquivo para garantir que o buffer registro tenha sido gravado
-  printf("\nRegistro criado com sucesso! O ID desse registro é: %d\n", registro->ID);
-}
-
-
-
-
-
-
-
-// Edição de Registro no Arquivo
-
-void editaRegistro (Registro * registro)
-{
-  // Assume-se que o usuário sabe o ID do registro que pretende editar
-  int ID_Busca;
-  printf("Informe o ID do registro que desejas editar: ");
-  scanf(" %d", &ID_Busca);
-  int posicaoRegistro = buscaRegistro(registro, ID_Busca);
-  if (posicaoRegistro == -1)
-  {
-    return; // A função busca já informou a não ocorrência desse registro, então é só sair dessa função
-  }
-  // Caso chegue nessa parte, podemos garantir que o registro existe e está ativo
-  exibeRegistro(*registro); // A função busca já preencheu a variável registro com o registro certo 
-  int campo;
-  printf("\nQual campo desejas alterar?\n");
-  exibeCampos();
-  printf("Informe com o número correspondente: ");
-  scanf(" %d", &campo);
-  getchar();
-  if (campo != subcampo)
-  {
-    preencheCampoComum(registro, campo); 
-  }
-  else
-  {
-    if (campo == subcampo)
-    {
-      int subCampoTipo;
-      printf("\nQual campo desejas alterar?\n");
-      exibeCamposTipo(registro);
-      printf("Informe com o número correspondente: ");
-      scanf(" %d", &subCampoTipo);
-      getchar();
-      preencheCampoTipo(registro, subCampoTipo);
-    }
-  }
-  FILE* f = fopen(ARQUIVO, "rb+"); // Abre o arquivo em modo binário de leitura para leitura e escrita
-  // Como a função busca já foi utilizada, podemos garantir que o arquivo existe. Se não existisse, a função já teria sido retornada
-  fseek(f, posicaoRegistro, SEEK_SET); // Posiciona para a posição inicial do registro, agora já editado
-  fwrite(registro, sizeof(Registro), 1, f);
-  fclose(f);
-  if (campo != nenhum)
-  {
-    printf("\nEdição de registro realizada com sucesso!\n");
-  }
-}
-
-
-
-// Remoção de Registro no Arquivo
-
-void removeRegistro (Registro * registro)
-{
-  // Assume-se que o usuário sabe o ID do registro que pretende remover
-
-  int ID_Busca;
-  printf("Informe o ID do registro que desejas remover: ");
-  scanf(" %d", &ID_Busca);
-
-  int posicaoRegistro = buscaRegistro(registro, ID_Busca);
-
-  if (posicaoRegistro == -1)
-  {
-    return; // A função busca já informou a não ocorrência desse registro, então é só sair dessa função
-  }
-
-  // Caso chegue nessa parte, podemos garantir que o registro existe e está ativo
-  registro->Ativo = 0;
-
-  FILE* f = fopen(ARQUIVO, "rb+"); // Abre o arquivo em modo binário de leitura para leitura e escrita
-
-  // Como a função busca já foi utilizada, podemos garantir que o arquivo existe. Se não existisse, a função já teria sido retornada
-
-  fseek(f, posicaoRegistro, SEEK_SET); // Posiciona para a posição inicial do registro, agora já removido (registro->Ativo == 0)
-
-  fwrite(registro, sizeof(Registro), 1, f);
-
-  fclose(f);
-
-
-  printf("\nRemoção de registro realizada com sucesso!\n");
-}
-
-
-
-// Fluxo do sitema
-
-void limpaTerminal (void)
-{
-  #ifdef _WIN32
-    system("cls");
-  #else
-    system("clear");
-  #endif
-}
-
-void exibeOpcoes (Registro * registro, int * ultimoID)
-{
-  int acao;
-  printf("Qual ação desejas realizar?\n [%d] Criação de Registro\n [%d] Busca de Registro\n [%d] Edição de Registro\n [%d] Remoção de Registro\n [%d] Sair\nInforme com o número correspondente: ", criacao, busca, edicao, remocao, sair);
-  scanf(" %d", &acao);
-  puts("");
-
-  while (acao != sair)
-  {
-    switch (acao)
-    {
-      case (criacao):
-        criaRegistro(registro, ultimoID);
-        break;
-
-      case (busca):
-        Busca(registro);
-        break;
-      
-      case (edicao):
-        editaRegistro(registro);
-        break;
-
-      case (remocao):
-        removeRegistro(registro);
-        break;
-    }
-    puts(""); // Apenas para fins de estética no terminal
-
-    int retorno = -1;
-    printf("Digite [0] para retornar à tela de opções: ");
-    scanf(" %d", &retorno); // Congelando a tela para que o usuário possa ver o que fez até que decida voltar para a tela de opções 
-
-    limpaTerminal();
-
-    printf("Qual ação desejas realizar?\n [%d] Criação de Registro\n [%d] Busca de Registro\n [%d] Edição de Registro\n [%d] Remoção de Registro\n [%d] Sair\nInforme com o número correspondente: ", criacao, busca, edicao, remocao, sair);
-    scanf(" %d", &acao);
-    puts("");
-  }
-
-  limpaTerminal(); // Limpando o terminal antes de finalizar o programa para que apenas a mensagem de despedida apareça.
-}
-
-void Opcoes (void)
-{
-  // Inicializando a aplicação
-
-  Registro registro; // Variável auxiliar que será utilizada em todas as operações, apenas de forma pontual
-  int ultimoID = -1; // Por mais que a função verifica_UltimoID() abaixo verifique e atribua o valor correto para essa variável, ela está sendo inicializada como -1 para evitar lixos de memória.
-
-  verifica_UltimoID(&ultimoID);
-
-
-  // Exibindo as opções
-
-  exibeOpcoes(&registro, &ultimoID);
 }
 
