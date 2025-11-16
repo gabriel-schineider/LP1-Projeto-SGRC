@@ -20,7 +20,7 @@
 ### 2. Formas de utilização
 
 ### Criação de Registros:
-Consiste na escrita de um registro em memória para o documento criado e gerenciado pela aplicação. Sendo assim, possível armazenar o registro de forma permanente. Com um limite de 100 registros
+Consiste na escrita de um registro em memória para o documento criado e gerenciado pela aplicação. Sendo assim, possível armazenar o registro de forma permanente. Com um limite de 100 registros. Ela pega o maior ID, e pergunta pro usuário preencher cada campo da nova entrada, de características gerais a específicas. No final, mostra ao usuário a ID da nova entrada e grava-a no arquivo. Essa ID é única, e sempre será 1 maior do que a maior ID existente no arquivo. Logo, a primeira entrada será a ID 1, 2, 3 .... até o máximo de 100.
 
 O usuário vai respondendo conforme a aplicação faz as requisições.
 
@@ -29,7 +29,7 @@ O usuário vai respondendo conforme a aplicação faz as requisições.
 
 
 ### Busca de Registros:
-Consiste na procura de um registro, informando o ID dele, no documento gerenciado pela aplicação.
+Consiste na procura de um registro, informando o ID dele, no documento gerenciado pela aplicação. ID dado pelo usuário.
 
 Caso o registro exista:
 
@@ -60,7 +60,7 @@ E, então, pergunta qual alteração o usuário deseja fazer:
 
 
 ### Remoção de Registros:
-Consiste em retirar do documento algum registro específico. Faz-se necessário passar o ID do registro para que a aplicação possa buscá-lo no documento por ela gerenciado para, então, removê-lo.
+Consiste em retirar do documento algum registro específico. Faz-se necessário passar o ID do registro para que a aplicação possa buscá-lo no documento por ela gerenciado para, então, removê-lo. A remoção é feita buscando a entrada no arquivo e o marcando como inativo.
 
 <img width="489" height="310" alt="removido" src="https://github.com/user-attachments/assets/f6fd6204-d66d-4f04-ac04-58c088d53588" />
 
